@@ -4,6 +4,8 @@ import corsOrigins from "./middlewares/cors";
 import logger from "./services/logger";
 import handleError from "./errors/handleError";
 import router from "./router/router";
+import connectToDB from "./services/db";
+import chalk from "chalk";
 
 
 const app: Express = express();
@@ -20,6 +22,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     handleError(res, 500, err.message || "Internal Server Error");
 });
 
-app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+app.listen(port, async () => {
+    console.log(chalk.blueBright(`Server is running at http://localhost:${port}`));
+    await connectToDB();
 });

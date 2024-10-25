@@ -12,25 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = connectToMongoLocalHost;
 require("dotenv/config");
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("./middlewares/cors"));
-const logger_1 = __importDefault(require("./services/logger"));
-const handleError_1 = __importDefault(require("./errors/handleError"));
-const router_1 = __importDefault(require("./router/router"));
-const db_1 = __importDefault(require("./services/db"));
 const chalk_1 = __importDefault(require("chalk"));
-const app = (0, express_1.default)();
-const port = process.env.PORT || 8181;
-app.use(cors_1.default);
-app.use(express_1.default.json());
-app.use(logger_1.default);
-app.use(express_1.default.static("./public"));
-app.use(router_1.default);
-app.use((err, req, res, next) => {
-    (0, handleError_1.default)(res, 500, err.message || "Internal Server Error");
-});
-app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(chalk_1.default.blueBright(`Server is running at http://localhost:${port}`));
-    yield (0, db_1.default)();
-}));
+const mongoose_1 = require("mongoose");
+function connectToMongoLocalHost() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            if (process.env.MONGO_LH_CONNECTION_STRING) {
+                yield (0, mongoose_1.connect)(process.env.MONGO_LH_CONNECTION_STRING);
+                console.log(chalk_1.default.greenBright("Connected to MongoDB locally"));
+            }
+            else {
+                console.log(chalk_1.default.redBright("Mongo connection string undefined"));
+            }
+        }
+        catch (err) {
+            console.log(chalk_1.default.redBright("Could not connect to MongoDB"));
+        }
+    });
+}

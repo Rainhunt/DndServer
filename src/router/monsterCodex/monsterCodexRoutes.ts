@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
-import handleError from "../errors/handleError";
-import { ServerError } from "../errors/createError";
+import handleError, { catchError } from "../../errors/handleError";
 
 const router = Router();
 
@@ -13,12 +12,7 @@ router.post("/", async (req: Request, res: Response) => {
             res.status(200).send("Congratulations! You created a new monster!");
         }
     } catch (err) {
-        if (err instanceof ServerError) {
-            handleError(res, err.status || 400, err.message);
-        } else {
-            const error = err as Error;
-            handleError(res, 400, error.message);
-        }
+        catchError(res, err);
     }
 });
 

@@ -31,23 +31,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.monsterCodexRouter = void 0;
+exports.userRouter = void 0;
 const express_1 = require("express");
-const handleError_1 = __importStar(require("../errors/handleError"));
+const handleError_1 = __importStar(require("../../errors/handleError"));
+const requestValidators_1 = require("./requestValidators");
+const registerUser_1 = require("../../db/users/services/registerUser");
+const lodash_1 = __importDefault(require("lodash"));
 const router = (0, express_1.Router)();
-exports.monsterCodexRouter = router;
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.userRouter = router;
+router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = req.user;
-        if (!user) {
-            (0, handleError_1.default)(res, 403, "You must be logged in to create a new monster");
+        const schemaError = (0, requestValidators_1.validateRegistrationBody)(req.body);
+        if (schemaError) {
+            (0, handleError_1.default)(res, 400, schemaError);
         }
         else {
-            res.status(200).send("Congratulations! You created a new monster!");
+            const user = yield (0, registerUser_1.registerUser)(req.body);
+            res.send(lodash_1.default.pick(user, ["name", "email", "_id"]));
         }
     }
     catch (err) {
+        console.log("here 2");
         (0, handleError_1.catchError)(res, err);
     }
 }));

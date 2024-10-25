@@ -1,3 +1,4 @@
 {
-    "LOGGER": "morgan"
+    "LOGGER": "morgan",
+    "SCHEMA_VALIDATOR": "joi"
 }

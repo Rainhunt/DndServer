@@ -34,7 +34,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.monsterCodexRouter = void 0;
 const express_1 = require("express");
-const handleError_1 = __importStar(require("../errors/handleError"));
+const handleError_1 = __importStar(require("../../errors/handleError"));
 const router = (0, express_1.Router)();
 exports.monsterCodexRouter = router;
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
