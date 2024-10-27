@@ -8,6 +8,6 @@ export async function registerUser(newUser: IUser): Promise<IUser> {
         user = await user.save();
         return user;
     } catch (err) {
-        createError("Mongoose", err as Error);
+        createError("Mongoose", "Email is already in use", 409);
     }
 }

@@ -8,7 +8,11 @@ export class ServerError extends Error {
     }
 }
 
-export default function createError(source: string, error: Error | string, status?: number): never {
-    const message = typeof error === "string" ? error : error.message;
-    throw new ServerError(`${source} Error: ${message}`, status);
+export default function createError(source: string, error: Error | string, status?: number, err?: unknown): never {
+    if (err instanceof ServerError) {
+        throw err;
+    } else {
+        const message = typeof error === "string" ? error : error.message;
+        throw new ServerError(`${source} Error: ${message}`, status);
+    }
 }

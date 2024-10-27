@@ -10,7 +10,12 @@ class ServerError extends Error {
     }
 }
 exports.ServerError = ServerError;
-function createError(source, error, status) {
-    const message = typeof error === "string" ? error : error.message;
-    throw new ServerError(`${source} Error: ${message}`, status);
+function createError(source, error, status, err) {
+    if (err instanceof ServerError) {
+        throw err;
+    }
+    else {
+        const message = typeof error === "string" ? error : error.message;
+        throw new ServerError(`${source} Error: ${message}`, status);
+    }
 }

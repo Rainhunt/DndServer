@@ -41,6 +41,10 @@ const handleError_1 = __importStar(require("../../errors/handleError"));
 const requestValidators_1 = require("./requestValidators");
 const registerUser_1 = require("../../db/users/services/registerUser");
 const lodash_1 = __importDefault(require("lodash"));
+const loginUser_1 = require("../../db/users/services/loginUser");
+const auth_1 = __importDefault(require("../../services/auth"));
+const createError_1 = __importDefault(require("../../errors/createError"));
+const getUsers_1 = __importDefault(require("../../db/users/services/getUsers"));
 const router = (0, express_1.Router)();
 exports.userRouter = router;
 router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -55,7 +59,37 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
     }
     catch (err) {
-        console.log("here 2");
+        (0, handleError_1.catchError)(res, err);
+    }
+}));
+router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const schemaError = (0, requestValidators_1.validateLoginBody)(req.body);
+        if (schemaError) {
+            (0, handleError_1.default)(res, 400, schemaError);
+        }
+        else {
+            const token = yield (0, loginUser_1.loginUser)(req.body.email, req.body.password);
+            res.send(token);
+        }
+    }
+    catch (err) {
+        (0, handleError_1.catchError)(res, err);
+    }
+}));
+router.get("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = req.user;
+        const { id } = req.params;
+        if (!user || user._id !== id) {
+            (0, createError_1.default)("Authorization", "You do not have permission to access this profile", 403);
+        }
+        else {
+            const user = yield (0, getUsers_1.default)(id);
+            res.send(lodash_1.default.pick(user, ["name", "email", "_id"]));
+        }
+    }
+    catch (err) {
         (0, handleError_1.catchError)(res, err);
     }
 }));

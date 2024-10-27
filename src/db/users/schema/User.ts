@@ -8,13 +8,19 @@ export interface IUser extends Document {
     name: NameField,
     email: string,
     password: string,
+    isAdmin: boolean,
     validatePassword: (password: string) => Promise<boolean>;
 }
 
 const userSchema = new Schema<IUser>({
     name: nameField,
     email: emailField,
-    password: passwordField
+    password: passwordField,
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 });
 
 userSchema.pre<IUser>("save", async function (next) {

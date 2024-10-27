@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = __importDefault(require("config"));
 const defaultConfig = {
     LOGGER: "morgan",
-    SCHEMA_VALIDATOR: "joi"
+    SCHEMA_VALIDATOR: "joi",
+    AUTH: "jwt"
 };
 const config = Object.assign(Object.assign({}, defaultConfig), config_1.default);
 exports.default = config;

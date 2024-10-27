@@ -20,7 +20,12 @@ const bcrypt_1 = require("bcrypt");
 const userSchema = new mongoose_1.Schema({
     name: NameField_1.default,
     email: EmailField_1.default,
-    password: PasswordField_1.default
+    password: PasswordField_1.default,
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 });
 userSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {

@@ -12,18 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUser = registerUser;
-const User_1 = __importDefault(require("../schema/User"));
+exports.loginUser = loginUser;
 const createError_1 = __importDefault(require("../../../errors/createError"));
-function registerUser(newUser) {
+const auth_1 = require("../../../services/auth");
+const User_1 = __importDefault(require("../schema/User"));
+function loginUser(email, password) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let user = new User_1.default(newUser);
-            user = yield user.save();
-            return user;
+            const user = yield User_1.default.findOne({ email });
+            if (!user || !(yield user.validatePassword(password))) {
+                (0, createError_1.default)("Authentication", "Invalid email or password", 401);
+            }
+            else {
+                return (0, auth_1.tokenGenerator)(user);
+            }
         }
         catch (err) {
-            (0, createError_1.default)("Mongoose", "Email is already in use", 409);
+            (0, createError_1.default)("Authentication", "Failed to log in user", 500, err);
         }
     });
 }

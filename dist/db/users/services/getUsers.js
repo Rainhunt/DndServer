@@ -12,18 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUser = registerUser;
-const User_1 = __importDefault(require("../schema/User"));
+exports.default = getUsers;
 const createError_1 = __importDefault(require("../../../errors/createError"));
-function registerUser(newUser) {
+const User_1 = __importDefault(require("../schema/User"));
+function getUsers(id) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let user = new User_1.default(newUser);
-            user = yield user.save();
-            return user;
+            if (id) {
+                const user = yield User_1.default.findById(id);
+                if (user) {
+                    return user;
+                }
+                else {
+                    (0, createError_1.default)("Mongoose", "User not found", 404);
+                }
+            }
+            else {
+                return yield User_1.default.find();
+            }
         }
         catch (err) {
-            (0, createError_1.default)("Mongoose", "Email is already in use", 409);
+            (0, createError_1.default)("Mongoose", "Internal Server Error", 500, err);
         }
     });
 }
