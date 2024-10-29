@@ -15,7 +15,8 @@ function generateJwtToken(user) {
         }
         else {
             const payload = {
-                _id: user._id
+                _id: user._id,
+                isAdmin: user.isAdmin
             };
             return (0, jsonwebtoken_1.sign)(payload, jwtSecret);
         }

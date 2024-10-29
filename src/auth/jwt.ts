@@ -4,7 +4,8 @@ import { IUser } from "../db/users/schema/User";
 import createError from "../errors/createError";
 
 export interface UserPayload extends JwtPayload {
-    _id: unknown
+    _id: unknown,
+    isAdmin: boolean
 }
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -15,7 +16,8 @@ export default function generateJwtToken(user: IUser) {
             createError("Server", "Internal Server Error", 500);
         } else {
             const payload: UserPayload = {
-                _id: user._id
+                _id: user._id,
+                isAdmin: user.isAdmin
             }
             return sign(payload, jwtSecret);
         }

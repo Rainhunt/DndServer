@@ -1,4 +1,3 @@
-import _ from "lodash";
 import User, { IUser } from "../schema/User";
 import createError from "../../../errors/createError";
 

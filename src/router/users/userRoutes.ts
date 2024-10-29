@@ -43,11 +43,25 @@ router.get("/:id", auth, async (req: Request, res: Response) => {
     try {
         const user = req.user;
         const { id } = req.params;
-        if (!user || user._id !== id) {
+        if (!user || user._id !== id && !user.isAdmin) {
             createError("Authorization", "You do not have permission to access this profile", 403);
         } else {
             const user = await getUsers(id) as IUser;
             res.send(_.pick(user, ["name", "email", "_id"]));
+        }
+    } catch (err) {
+        catchError(res, err);
+    }
+});
+
+router.get("/", auth, async (req: Request, res: Response) => {
+    try {
+        const user = req.user
+        if (!user?.isAdmin) {
+            createError("Authorization", "You do not have permission to access this information", 403);
+        } else {
+            const users = await getUsers() as IUser[];
+            res.send(users.map((user) => _.pick(user, ["_id", "name", "email"])));
         }
     } catch (err) {
         catchError(res, err);

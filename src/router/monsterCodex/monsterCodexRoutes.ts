@@ -1,15 +1,18 @@
 import { Request, Response, Router } from "express";
 import handleError, { catchError } from "../../errors/handleError";
+import auth from "../../services/auth";
+import { addMonster } from "../../db/monsters/services/addMonster";
 
 const router = Router();
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", auth, async (req: Request, res: Response) => {
     try {
         const user = req.user;
         if (!user) {
             handleError(res, 403, "You must be logged in to create a new monster");
         } else {
-            res.status(200).send("Congratulations! You created a new monster!");
+            const monster = await addMonster(req.body);
+            res.send(monster);
         }
     } catch (err) {
         catchError(res, err);
