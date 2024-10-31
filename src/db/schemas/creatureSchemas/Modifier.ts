@@ -19,6 +19,7 @@ export const stringModifier = new Schema<Modifier<string>>({
 export const numberModifier = new Schema<Modifier<number>>({
     value: {
         type: Number,
+        required: true,
         min: 0,
         max: 255
     },

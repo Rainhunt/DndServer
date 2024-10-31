@@ -7,6 +7,8 @@ import hitPointsField from "../../schemas/creatureSchemas/HitPointsField";
 import speedField from "../../schemas/creatureSchemas/SpeedField";
 import abilityScoresField from "../../schemas/creatureSchemas/AbilityScoresField";
 import proficienciesField from "../../schemas/creatureSchemas/ProficienciesField";
+import { conditionImmunities } from "../../schemas/creatureSchemas/conditionImmunities";
+import { damageTypesField } from "../../schemas/creatureSchemas/damageTypesField";
 
 export interface IMonster extends ICreature, Document {
     CR: number,
@@ -14,6 +16,18 @@ export interface IMonster extends ICreature, Document {
 }
 
 const monsterSchema = new Schema<IMonster>({
+    CR: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 40
+    },
+    XP: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 1000000
+    },
     name: {
         ...defaultField,
         unique: true
@@ -37,24 +51,40 @@ const monsterSchema = new Schema<IMonster>({
         type: armorClassField,
         required: true
     },
-    // hitPoints: {
-    //     type: hitPointsField,
-    //     required: true
-    // },
-    // speed: {
-    //     type: [speedField],
-    //     validate: {
-    //         validator: v => Array.isArray(v) && v.length > 0,
-    //     }
-    // },
-    // abilityScores: {
-    //     type: abilityScoresField,
-    //     required: true
-    // },
-    // proficiencies: {
-    //     type: proficienciesField,
-    //     required: true
-    // }
+    hitPoints: {
+        type: hitPointsField,
+        required: true
+    },
+    speed: {
+        type: [speedField],
+        validate: {
+            validator: v => Array.isArray(v) && v.filter(Boolean).length > 0
+        }
+    },
+    abilityScores: {
+        type: abilityScoresField,
+        required: true
+    },
+    proficiencies: {
+        type: proficienciesField,
+        required: true
+    },
+    abilities: {
+        type: [String],
+        validate: {
+            validator: v => Array.isArray(v)
+        }
+    },
+    conditionImmunities: {
+        type: [conditionImmunities],
+        validate: {
+            validator: v => Array.isArray(v)
+        }
+    },
+    damageTypes: {
+        type: damageTypesField,
+        required: true
+    }
 });
 
 const Monster = model<IMonster>("Monster", monsterSchema);

@@ -19,13 +19,11 @@ function addMonster(newMonster) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let monster = new Monster_1.default(newMonster);
-            console.log("here2");
             monster = yield monster.save();
-            console.log("here3");
             return monster;
         }
         catch (err) {
-            console.log("here4");
+            console.log("Entered err");
             if (err instanceof Error) {
                 (0, createError_1.default)("Mongoose", err.message, 409);
             }

@@ -7,7 +7,25 @@ const mongoose_1 = require("mongoose");
 const DefaultField_1 = __importDefault(require("../../schemas/DefaultField"));
 const srdEnums_1 = require("../../../resources/srdEnums");
 const ArmorClassField_1 = __importDefault(require("../../schemas/creatureSchemas/ArmorClassField"));
+const HitPointsField_1 = __importDefault(require("../../schemas/creatureSchemas/HitPointsField"));
+const SpeedField_1 = __importDefault(require("../../schemas/creatureSchemas/SpeedField"));
+const AbilityScoresField_1 = __importDefault(require("../../schemas/creatureSchemas/AbilityScoresField"));
+const ProficienciesField_1 = __importDefault(require("../../schemas/creatureSchemas/ProficienciesField"));
+const conditionImmunities_1 = require("../../schemas/creatureSchemas/conditionImmunities");
+const damageTypesField_1 = require("../../schemas/creatureSchemas/damageTypesField");
 const monsterSchema = new mongoose_1.Schema({
+    CR: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 40
+    },
+    XP: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 1000000
+    },
     name: Object.assign(Object.assign({}, DefaultField_1.default), { unique: true }),
     size: {
         type: String,
@@ -28,24 +46,40 @@ const monsterSchema = new mongoose_1.Schema({
         type: ArmorClassField_1.default,
         required: true
     },
-    // hitPoints: {
-    //     type: hitPointsField,
-    //     required: true
-    // },
-    // speed: {
-    //     type: [speedField],
-    //     validate: {
-    //         validator: v => Array.isArray(v) && v.length > 0,
-    //     }
-    // },
-    // abilityScores: {
-    //     type: abilityScoresField,
-    //     required: true
-    // },
-    // proficiencies: {
-    //     type: proficienciesField,
-    //     required: true
-    // }
+    hitPoints: {
+        type: HitPointsField_1.default,
+        required: true
+    },
+    speed: {
+        type: [SpeedField_1.default],
+        validate: {
+            validator: v => Array.isArray(v) && v.filter(Boolean).length > 0
+        }
+    },
+    abilityScores: {
+        type: AbilityScoresField_1.default,
+        required: true
+    },
+    proficiencies: {
+        type: ProficienciesField_1.default,
+        required: true
+    },
+    abilities: {
+        type: [String],
+        validate: {
+            validator: v => Array.isArray(v)
+        }
+    },
+    conditionImmunities: {
+        type: [conditionImmunities_1.conditionImmunities],
+        validate: {
+            validator: v => Array.isArray(v)
+        }
+    },
+    damageTypes: {
+        type: damageTypesField_1.damageTypesField,
+        required: true
+    }
 });
 const Monster = (0, mongoose_1.model)("Monster", monsterSchema);
 exports.default = Monster;

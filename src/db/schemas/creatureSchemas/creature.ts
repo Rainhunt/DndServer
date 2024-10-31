@@ -1,9 +1,11 @@
-import { ALIGNMENTS, CREATURE_SIZES, CREATURE_TYPES } from "../../../resources/srdEnums";
+import { ALIGNMENTS, CONDITIONS, CREATURE_SIZES, CREATURE_TYPES } from "../../../resources/srdEnums";
 import { HitPoints } from "./HitPointsField";
 import { Speed } from "./SpeedField";
 import { AbilityScores } from "./AbilityScoresField";
 import { Proficiencies } from "./ProficienciesField";
 import { ArmorClass } from "./ArmorClassField";
+import { Modifier } from "./Modifier";
+import { DamageTypes } from "./damageTypesField";
 
 export interface ICreature {
     name: string;
@@ -15,7 +17,7 @@ export interface ICreature {
     speed: Speed[];
     abilityScores: AbilityScores;
     proficiencies: Proficiencies;
-    // damage: damage;
-    // conditionImmunities: modifier<CONDITIONS>[];
-    // abilities: string[];
+    damageTypes: DamageTypes;
+    conditionImmunities: Modifier<CONDITIONS>[];
+    abilities: string[];
 }

@@ -12,7 +12,7 @@ const speedField = new mongoose_1.Schema({
     base: {
         type: [Modifier_1.numberModifier],
         validate: {
-            validator: v => Array.isArray(v) && v.length > 0,
+            validator: v => Array.isArray(v) && v.filter(Boolean).length > 0
         }
     },
     modifiers: {

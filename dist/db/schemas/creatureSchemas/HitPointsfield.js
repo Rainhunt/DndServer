@@ -7,7 +7,7 @@ const hitPointsField = new mongoose_1.Schema({
     sources: {
         type: [Modifier_1.numberModifier],
         validate: {
-            validator: v => Array.isArray(v) && v.length > 0,
+            validator: v => Array.isArray(v) && v.filter(Boolean).length > 0
         }
     },
     current: {

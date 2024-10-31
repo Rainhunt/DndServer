@@ -18,6 +18,7 @@ exports.stringModifier = new mongoose_1.Schema({
 exports.numberModifier = new mongoose_1.Schema({
     value: {
         type: Number,
+        required: true,
         min: 0,
         max: 255
     },

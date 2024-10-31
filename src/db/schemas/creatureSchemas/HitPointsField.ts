@@ -13,7 +13,7 @@ const hitPointsField = new Schema<HitPoints>({
     sources: {
         type: [numberModifier],
         validate: {
-            validator: v => Array.isArray(v) && v.length > 0,
+            validator: v => Array.isArray(v) && v.filter(Boolean).length > 0
         }
     },
     current: {
