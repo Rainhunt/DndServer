@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 import { Modifier } from "./Modifier";
 import { CONDITIONS, matchEnum } from "../../../resources/srdEnums";
 
-export const conditionImmunities = new Schema<Modifier<CONDITIONS>>({
+const conditionImmunities = new Schema<Modifier<CONDITIONS>>({
     value: {
         type: String,
         required: true,
@@ -15,3 +15,5 @@ export const conditionImmunities = new Schema<Modifier<CONDITIONS>>({
         maxlength: 256
     }
 });
+
+export default conditionImmunities;

@@ -1,4 +1,4 @@
-import { Document, Schema, SchemaTypeOptions } from "mongoose";
+import { Document, Schema } from "mongoose";
 import defaultField from "../DefaultField";
 
 export interface Modifier<T> extends Document {

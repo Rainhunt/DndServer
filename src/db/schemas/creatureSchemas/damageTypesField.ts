@@ -22,7 +22,7 @@ export interface DamageTypes {
     immunities: Modifier<DAMAGE_TYPES>[];
 }
 
-export const damageTypesField = new Schema<DamageTypes>({
+const damageTypesField = new Schema<DamageTypes>({
     resistances: {
         type: [damageType],
         required: true,
@@ -36,3 +36,5 @@ export const damageTypesField = new Schema<DamageTypes>({
         required: true,
     }
 });
+
+export default damageTypesField;

@@ -1,6 +1,5 @@
 import { Document, Schema } from "mongoose";
-import { Modifier, numberModifier, stringModifier } from "./Modifier";
-import { sum } from "lodash";
+import { Modifier, stringModifier } from "./Modifier";
 import { ABILITY_SCORES, ARMOR_TYPES, LANGUAGES, SKILLS, TOOLS, WEAPON_TYPES } from "../../../resources/srdEnums";
 
 export interface Proficiencies extends Document {

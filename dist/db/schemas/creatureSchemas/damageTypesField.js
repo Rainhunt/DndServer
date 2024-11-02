@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.damageTypesField = exports.damageType = void 0;
+exports.damageType = void 0;
 const mongoose_1 = require("mongoose");
 const srdEnums_1 = require("../../../resources/srdEnums");
 exports.damageType = new mongoose_1.Schema({
@@ -16,7 +16,7 @@ exports.damageType = new mongoose_1.Schema({
         maxlength: 256
     }
 });
-exports.damageTypesField = new mongoose_1.Schema({
+const damageTypesField = new mongoose_1.Schema({
     resistances: {
         type: [exports.damageType],
         required: true,
@@ -30,3 +30,4 @@ exports.damageTypesField = new mongoose_1.Schema({
         required: true,
     }
 });
+exports.default = damageTypesField;

@@ -7,12 +7,11 @@ import hitPointsField from "../../schemas/creatureSchemas/HitPointsField";
 import speedField from "../../schemas/creatureSchemas/SpeedField";
 import abilityScoresField from "../../schemas/creatureSchemas/AbilityScoresField";
 import proficienciesField from "../../schemas/creatureSchemas/ProficienciesField";
-import { conditionImmunities } from "../../schemas/creatureSchemas/conditionImmunities";
-import { damageTypesField } from "../../schemas/creatureSchemas/damageTypesField";
+import conditionImmunities from "../../schemas/creatureSchemas/conditionImmunities";
+import damageTypesField from "../../schemas/creatureSchemas/damageTypesField";
 
 export interface IMonster extends ICreature, Document {
-    CR: number,
-    XP: number
+    CR: number
 }
 
 const monsterSchema = new Schema<IMonster>({
@@ -21,12 +20,6 @@ const monsterSchema = new Schema<IMonster>({
         required: true,
         min: 0,
         max: 40
-    },
-    XP: {
-        type: Number,
-        required: true,
-        min: 0,
-        max: 1000000
     },
     name: {
         ...defaultField,

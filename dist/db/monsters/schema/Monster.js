@@ -11,20 +11,14 @@ const HitPointsField_1 = __importDefault(require("../../schemas/creatureSchemas/
 const SpeedField_1 = __importDefault(require("../../schemas/creatureSchemas/SpeedField"));
 const AbilityScoresField_1 = __importDefault(require("../../schemas/creatureSchemas/AbilityScoresField"));
 const ProficienciesField_1 = __importDefault(require("../../schemas/creatureSchemas/ProficienciesField"));
-const conditionImmunities_1 = require("../../schemas/creatureSchemas/conditionImmunities");
-const damageTypesField_1 = require("../../schemas/creatureSchemas/damageTypesField");
+const conditionImmunities_1 = __importDefault(require("../../schemas/creatureSchemas/conditionImmunities"));
+const damageTypesField_1 = __importDefault(require("../../schemas/creatureSchemas/damageTypesField"));
 const monsterSchema = new mongoose_1.Schema({
     CR: {
         type: Number,
         required: true,
         min: 0,
         max: 40
-    },
-    XP: {
-        type: Number,
-        required: true,
-        min: 0,
-        max: 1000000
     },
     name: Object.assign(Object.assign({}, DefaultField_1.default), { unique: true }),
     size: {
@@ -71,13 +65,13 @@ const monsterSchema = new mongoose_1.Schema({
         }
     },
     conditionImmunities: {
-        type: [conditionImmunities_1.conditionImmunities],
+        type: [conditionImmunities_1.default],
         validate: {
             validator: v => Array.isArray(v)
         }
     },
     damageTypes: {
-        type: damageTypesField_1.damageTypesField,
+        type: damageTypesField_1.default,
         required: true
     }
 });

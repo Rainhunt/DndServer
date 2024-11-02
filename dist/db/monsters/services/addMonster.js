@@ -23,12 +23,10 @@ function addMonster(newMonster) {
             return monster;
         }
         catch (err) {
-            console.log("Entered err");
             if (err instanceof Error) {
                 (0, createError_1.default)("Mongoose", err.message, 409);
             }
             else {
-                console.log(err);
                 (0, createError_1.default)("Mongoose", "unknown", 500);
             }
         }

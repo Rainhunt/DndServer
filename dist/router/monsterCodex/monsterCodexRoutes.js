@@ -40,6 +40,8 @@ const express_1 = require("express");
 const handleError_1 = __importStar(require("../../errors/handleError"));
 const auth_1 = __importDefault(require("../../services/auth"));
 const addMonster_1 = require("../../db/monsters/services/addMonster");
+const requestValidators_1 = require("./requestValidators");
+const mapNewMonster_1 = require("./requestSchemas/joi/mapNewMonster");
 const router = (0, express_1.Router)();
 exports.monsterCodexRouter = router;
 router.post("/", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -49,8 +51,15 @@ router.post("/", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0,
             (0, handleError_1.default)(res, 403, "You must be logged in to create a new monster");
         }
         else {
-            const monster = yield (0, addMonster_1.addMonster)(req.body);
-            res.send(monster);
+            const schemaError = (0, requestValidators_1.validateNewMonsterBody)(req.body);
+            if (schemaError) {
+                (0, handleError_1.default)(res, 400, schemaError);
+            }
+            else {
+                let monster = (0, mapNewMonster_1.mapNewMonster)(req.body);
+                monster = yield (0, addMonster_1.addMonster)(monster);
+                res.send(monster);
+            }
         }
     }
     catch (err) {

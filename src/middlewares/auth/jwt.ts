@@ -1,7 +1,7 @@
 import "dotenv/config";
-import { NextFunction, Request, request, RequestHandler, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import createError from "../../errors/createError";
-import { JwtPayload, verify } from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import { catchError } from "../../errors/handleError";
 import { UserPayload } from "../../auth/jwt";
 
