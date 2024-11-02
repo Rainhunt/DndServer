@@ -15,5 +15,3 @@ function validateNewMonsterBody(user) {
             return (_a = newMonster_1.default.validate(user).error) === null || _a === void 0 ? void 0 : _a.details[0].message;
     }
 }
-// newMonsterJoiSchema.validate(user).error?.details[0].message
-// newMonsterJoiSchema.validate(user).error?.details.map((detail) => JSON.stringify(detail)).join(" | ")

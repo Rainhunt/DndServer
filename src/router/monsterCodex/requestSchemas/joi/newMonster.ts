@@ -59,7 +59,7 @@ const newMonsterJoiSchema = Joi.object({
     "number.integer": "{#label} must be an integer",
     "number.min": "{#label} must be at least {#limit}",
     "number.max": "{#label} must be less than or equal to {#limit}",
-    "any.only": "{#label} must be one of the following values: {#valid}"
+    "any.only": "{#label} must be one of the following values: {#valids}"
 });
 
 export default newMonsterJoiSchema;
