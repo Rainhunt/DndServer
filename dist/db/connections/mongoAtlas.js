@@ -12,21 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = connectToDB;
+exports.default = connectToMongoAtlas;
 require("dotenv/config");
-const mongoLocalHost_1 = __importDefault(require("../db/connections/mongoLocalHost"));
-const mongoAtlas_1 = __importDefault(require("../db/connections/mongoAtlas"));
-const ENVIRONMENT = process.env.NODE_ENV;
-function connectToDB() {
+const chalk_1 = __importDefault(require("chalk"));
+const mongoose_1 = require("mongoose");
+function connectToMongoAtlas() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(ENVIRONMENT);
-        switch (ENVIRONMENT) {
-            case "production":
-                yield (0, mongoAtlas_1.default)();
-                break;
-            case "development":
-            default:
-                yield (0, mongoLocalHost_1.default)();
+        try {
+            if (process.env.MONGO_ATLAS_CONNECTION_STRING) {
+                yield (0, mongoose_1.connect)(process.env.MONGO_ATLAS_CONNECTION_STRING);
+                console.log(chalk_1.default.greenBright("Connected to MongoDB in Atlas"));
+            }
+            else {
+                console.log(chalk_1.default.redBright("Mongo connection string undefined"));
+            }
+        }
+        catch (err) {
+            console.log(chalk_1.default.redBright("Could not connect to MongoDB"));
         }
     });
 }
