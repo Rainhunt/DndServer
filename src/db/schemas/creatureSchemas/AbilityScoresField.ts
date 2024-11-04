@@ -25,7 +25,7 @@ const abilityScore = new Schema<AbiltiyScore>({
 
 abilityScore.virtual("value").get(function (this: AbiltiyScore): number {
     const base: number[] = this.base.map((modifier) => modifier.value);
-    const modifiers: number[] = this.base.map((modifier) => modifier.value);
+    const modifiers: number[] = this.modifiers.map((modifier) => modifier.value);
     return sum([...base, ...modifiers]);
 });
 

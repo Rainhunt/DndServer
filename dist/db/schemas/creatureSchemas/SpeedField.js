@@ -24,7 +24,7 @@ const speedField = new mongoose_1.Schema({
 });
 speedField.virtual("value").get(function () {
     const base = this.base.map((modifier) => modifier.value);
-    const modifiers = this.base.map((modifier) => modifier.value);
+    const modifiers = this.modifiers.map((modifier) => modifier.value);
     return (0, lodash_1.sum)([...base, ...modifiers]);
 });
 exports.default = speedField;

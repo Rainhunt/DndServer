@@ -19,7 +19,7 @@ const abilityScore = new mongoose_1.Schema({
 });
 abilityScore.virtual("value").get(function () {
     const base = this.base.map((modifier) => modifier.value);
-    const modifiers = this.base.map((modifier) => modifier.value);
+    const modifiers = this.modifiers.map((modifier) => modifier.value);
     return (0, lodash_1.sum)([...base, ...modifiers]);
 });
 const abilityScoresField = new mongoose_1.Schema({

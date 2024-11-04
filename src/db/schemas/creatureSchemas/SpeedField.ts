@@ -31,7 +31,7 @@ const speedField = new Schema<Speed>({
 
 speedField.virtual("value").get(function (this: Speed): number {
     const base: number[] = this.base.map((modifier) => modifier.value);
-    const modifiers: number[] = this.base.map((modifier) => modifier.value);
+    const modifiers: number[] = this.modifiers.map((modifier) => modifier.value);
     return sum([...base, ...modifiers]);
 });
 

@@ -1,4 +1,4 @@
-import Joi, { AlternativesSchema } from "joi";
+import Joi, { AlternativesSchema, ArraySchema } from "joi";
 import { ABILITY_SCORES, ALIGNMENTS, ARMOR_TYPES, CONDITIONS, CREATURE_SIZES, CREATURE_TYPES, DAMAGE_TYPES, LANGUAGES, SKILLS, SPEED_TYPES, TOOLS, WEAPON_TYPES } from "../../../../resources/srdEnums";
 
 function numOrModifierArray(min = 1, max = 1000000): AlternativesSchema {
@@ -10,6 +10,20 @@ function numOrModifierArray(min = 1, max = 1000000): AlternativesSchema {
         }))).required().messages({
             "alternatives.types": "{#label} must be a number or a modifier array"
         });
+}
+
+function enumArrayOrModifierArray(enumType: Record<string, string>): ArraySchema {
+    return Joi.array().items(
+        Joi.alternatives().try(
+            Joi.string().valid(...Object.values(enumType)).required(),
+            Joi.object({
+                value: Joi.string().valid(...Object.values(enumType)).required(),
+                source: Joi.string().min(2).max(256).required()
+            })
+        )
+    ).required().messages({
+        "alternatives.types": "{#label} must be an string or a modifier"
+    });
 }
 
 const newMonsterJoiSchema = Joi.object({
@@ -37,19 +51,19 @@ const newMonsterJoiSchema = Joi.object({
         WIS: numOrModifierArray(1, 100)
     }).required(),
     proficiencies: Joi.object({
-        skills: Joi.array().items(Joi.string().valid(...Object.values(SKILLS))).optional(),
-        tools: Joi.array().items(Joi.string().valid(...Object.values(TOOLS))).optional(),
-        savingThrows: Joi.array().items(Joi.string().valid(...Object.values(ABILITY_SCORES))).optional(),
-        weapons: Joi.array().items(Joi.string().valid(...Object.values(WEAPON_TYPES))).optional(),
-        armor: Joi.array().items(Joi.string().valid(...Object.values(ARMOR_TYPES))).optional(),
-        languages: Joi.array().items(Joi.string().valid(...Object.values(LANGUAGES))).optional()
+        skills: enumArrayOrModifierArray(SKILLS).optional(),
+        tools: enumArrayOrModifierArray(TOOLS).optional(),
+        savingThrows: enumArrayOrModifierArray(ABILITY_SCORES).optional(),
+        weapons: enumArrayOrModifierArray(WEAPON_TYPES).optional(),
+        armor: enumArrayOrModifierArray(ARMOR_TYPES).optional(),
+        languages: enumArrayOrModifierArray(LANGUAGES).optional()
     }).optional(),
     damageTypes: Joi.object({
-        resistances: Joi.array().items(Joi.string().valid(...Object.values(DAMAGE_TYPES))).optional(),
-        vulnerabilities: Joi.array().items(Joi.string().valid(...Object.values(DAMAGE_TYPES))).optional(),
-        immunities: Joi.array().items(Joi.string().valid(...Object.values(DAMAGE_TYPES))).optional()
+        resistances: enumArrayOrModifierArray(DAMAGE_TYPES).optional(),
+        vulnerabilities: enumArrayOrModifierArray(DAMAGE_TYPES).optional(),
+        immunities: enumArrayOrModifierArray(DAMAGE_TYPES).optional()
     }).optional(),
-    conditionImmunities: Joi.array().items(Joi.string().valid(...Object.values(CONDITIONS))).optional()
+    conditionImmunities: enumArrayOrModifierArray(CONDITIONS).optional()
 }).messages({
     "any.required": "{#label} is required",
     "string.base": "{#label} must be a string",
@@ -59,6 +73,7 @@ const newMonsterJoiSchema = Joi.object({
     "number.integer": "{#label} must be an integer",
     "number.min": "{#label} must be at least {#limit}",
     "number.max": "{#label} must be less than or equal to {#limit}",
+    "array.base": "{#label} must be an array",
     "any.only": "{#label} must be one of the following values: {#valids}"
 });
 

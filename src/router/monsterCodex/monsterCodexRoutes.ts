@@ -4,6 +4,8 @@ import auth from "../../services/auth";
 import { addMonster } from "../../db/monsters/services/addMonster";
 import { validateNewMonsterBody } from "./requestValidators";
 import { mapNewMonster } from "./requestSchemas/joi/mapNewMonster";
+import createError from "../../errors/createError";
+import getMonsters from "../../db/monsters/services/getMonsters";
 
 const router = Router();
 
@@ -22,6 +24,25 @@ router.post("/", auth, async (req: Request, res: Response) => {
                 res.send(monster);
             }
         }
+    } catch (err) {
+        catchError(res, err);
+    }
+});
+
+router.get("/:id", async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const monster = await getMonsters(id);
+        res.send(monster);
+    } catch (err) {
+        catchError(res, err);
+    }
+});
+
+router.get("/", auth, async (req: Request, res: Response) => {
+    try {
+        const monsters = await getMonsters();
+        res.send(monsters);
     } catch (err) {
         catchError(res, err);
     }

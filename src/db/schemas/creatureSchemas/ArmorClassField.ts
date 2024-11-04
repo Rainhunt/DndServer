@@ -25,7 +25,7 @@ const armorClassField = new Schema<ArmorClass>({
 
 armorClassField.virtual("value").get(function (this: ArmorClass): number {
     const base: number[] = this.base.map((modifier) => modifier.value);
-    const modifiers: number[] = this.base.map((modifier) => modifier.value);
+    const modifiers: number[] = this.modifiers.map((modifier) => modifier.value);
     return sum([...base, ...modifiers]);
 });
 

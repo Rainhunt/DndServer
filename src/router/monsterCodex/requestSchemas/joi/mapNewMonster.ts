@@ -9,6 +9,13 @@ function numOrModifierArray(requestField: number | { value: number, source: stri
     ] : requestField
 }
 
+function enumArrayOrModifierArray(requestField: string[] | { value: string, source: string }[], source: string): { value: string, source: string }[] {
+    return requestField.map((item) => typeof item === "string" ? {
+        value: item,
+        source: source
+    } : item);
+}
+
 export function mapNewMonster(requestBody: any, source: string = "Homebrew"): IMonster {
     return new Monster({
         CR: requestBody.CR,
@@ -57,17 +64,17 @@ export function mapNewMonster(requestBody: any, source: string = "Homebrew"): IM
             }
         },
         proficiencies: {
-            skills: requestBody.proficiencies?.skills,
-            tools: requestBody.proficiencies?.skills,
-            savingThrows: requestBody.proficiencies?.skills,
-            weapons: requestBody.proficiencies?.skills,
-            armor: requestBody.proficiencies?.skills,
-            languages: requestBody.proficiencies?.skills,
+            skills: enumArrayOrModifierArray(requestBody.proficiencies?.skills || [], source),
+            tools: enumArrayOrModifierArray(requestBody.proficiencies?.tools || [], source),
+            savingThrows: enumArrayOrModifierArray(requestBody.proficiencies?.savingThrows || [], source),
+            weapons: enumArrayOrModifierArray(requestBody.proficiencies?.weapons || [], source),
+            armor: enumArrayOrModifierArray(requestBody.proficiencies?.armor || [], source),
+            languages: enumArrayOrModifierArray(requestBody.proficiencies?.languages || [], source),
         },
         damageTypes: {
-            resistances: requestBody.damageTypes?.resistances,
-            vulnerabilities: requestBody.damageTypes?.vulnerabilities,
-            immunities: requestBody.damageTypes?.immunities,
+            resistances: enumArrayOrModifierArray(requestBody.proficiencies?.resistances || [], source),
+            vulnerabilities: enumArrayOrModifierArray(requestBody.proficiencies?.vulnerabilities || [], source),
+            immunities: enumArrayOrModifierArray(requestBody.proficiencies?.immunities || [], source),
         },
         conditionImmunities: requestBody.conditionImmunities
     })

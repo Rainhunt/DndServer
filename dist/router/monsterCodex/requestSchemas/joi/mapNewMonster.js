@@ -13,6 +13,12 @@ function numOrModifierArray(requestField, source) {
         }
     ] : requestField;
 }
+function enumArrayOrModifierArray(requestField, source) {
+    return requestField.map((item) => typeof item === "string" ? {
+        value: item,
+        source: source
+    } : item);
+}
 function mapNewMonster(requestBody, source = "Homebrew") {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     return new Monster_1.default({
@@ -62,17 +68,17 @@ function mapNewMonster(requestBody, source = "Homebrew") {
             }
         },
         proficiencies: {
-            skills: (_a = requestBody.proficiencies) === null || _a === void 0 ? void 0 : _a.skills,
-            tools: (_b = requestBody.proficiencies) === null || _b === void 0 ? void 0 : _b.skills,
-            savingThrows: (_c = requestBody.proficiencies) === null || _c === void 0 ? void 0 : _c.skills,
-            weapons: (_d = requestBody.proficiencies) === null || _d === void 0 ? void 0 : _d.skills,
-            armor: (_e = requestBody.proficiencies) === null || _e === void 0 ? void 0 : _e.skills,
-            languages: (_f = requestBody.proficiencies) === null || _f === void 0 ? void 0 : _f.skills,
+            skills: enumArrayOrModifierArray(((_a = requestBody.proficiencies) === null || _a === void 0 ? void 0 : _a.skills) || [], source),
+            tools: enumArrayOrModifierArray(((_b = requestBody.proficiencies) === null || _b === void 0 ? void 0 : _b.tools) || [], source),
+            savingThrows: enumArrayOrModifierArray(((_c = requestBody.proficiencies) === null || _c === void 0 ? void 0 : _c.savingThrows) || [], source),
+            weapons: enumArrayOrModifierArray(((_d = requestBody.proficiencies) === null || _d === void 0 ? void 0 : _d.weapons) || [], source),
+            armor: enumArrayOrModifierArray(((_e = requestBody.proficiencies) === null || _e === void 0 ? void 0 : _e.armor) || [], source),
+            languages: enumArrayOrModifierArray(((_f = requestBody.proficiencies) === null || _f === void 0 ? void 0 : _f.languages) || [], source),
         },
         damageTypes: {
-            resistances: (_g = requestBody.damageTypes) === null || _g === void 0 ? void 0 : _g.resistances,
-            vulnerabilities: (_h = requestBody.damageTypes) === null || _h === void 0 ? void 0 : _h.vulnerabilities,
-            immunities: (_j = requestBody.damageTypes) === null || _j === void 0 ? void 0 : _j.immunities,
+            resistances: enumArrayOrModifierArray(((_g = requestBody.proficiencies) === null || _g === void 0 ? void 0 : _g.resistances) || [], source),
+            vulnerabilities: enumArrayOrModifierArray(((_h = requestBody.proficiencies) === null || _h === void 0 ? void 0 : _h.vulnerabilities) || [], source),
+            immunities: enumArrayOrModifierArray(((_j = requestBody.proficiencies) === null || _j === void 0 ? void 0 : _j.immunities) || [], source),
         },
         conditionImmunities: requestBody.conditionImmunities
     });
