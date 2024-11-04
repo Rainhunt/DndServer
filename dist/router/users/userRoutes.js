@@ -45,6 +45,8 @@ const loginUser_1 = require("../../db/users/services/loginUser");
 const auth_1 = __importDefault(require("../../services/auth"));
 const createError_1 = __importDefault(require("../../errors/createError"));
 const getUsers_1 = __importDefault(require("../../db/users/services/getUsers"));
+const editUser_1 = __importDefault(require("../../db/users/services/editUser"));
+const deleteUser_1 = __importDefault(require("../../db/users/services/deleteUser"));
 const router = (0, express_1.Router)();
 exports.userRouter = router;
 router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -102,6 +104,44 @@ router.get("/", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, 
         else {
             const users = yield (0, getUsers_1.default)();
             res.send(users.map((user) => lodash_1.default.pick(user, ["_id", "name", "email"])));
+        }
+    }
+    catch (err) {
+        (0, handleError_1.catchError)(res, err);
+    }
+}));
+router.put("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = req.user;
+        const { id } = req.params;
+        if (!user || user._id !== id) {
+            (0, createError_1.default)("Authorization", "You do not have permission to edit this profile", 403);
+        }
+        else {
+            const schemaError = (0, requestValidators_1.validateEditUserBody)(req.body);
+            if (schemaError) {
+                (0, handleError_1.default)(res, 400, schemaError);
+            }
+            else {
+                const updated = yield (0, editUser_1.default)(id, req.body);
+                res.send(lodash_1.default.pick(updated, ["name", "email", "_id"]));
+            }
+        }
+    }
+    catch (err) {
+        (0, handleError_1.catchError)(res, err);
+    }
+}));
+router.delete("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = req.user;
+        const { id } = req.params;
+        if (!user || user._id !== id) {
+            (0, createError_1.default)("Authorization", "You do not have permission to delete this profile", 403);
+        }
+        else {
+            const deleted = yield (0, deleteUser_1.default)(id);
+            res.send(lodash_1.default.pick(deleted, ["name", "email", "_id"]));
         }
     }
     catch (err) {

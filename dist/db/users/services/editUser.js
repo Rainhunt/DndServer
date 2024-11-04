@@ -12,20 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = connectToDB;
-require("dotenv/config");
-const mongoLocalHost_1 = __importDefault(require("../db/connections/mongoLocalHost"));
-const mongoAtlas_1 = __importDefault(require("../db/connections/mongoAtlas"));
-const ENVIRONMENT = process.env.NODE_ENV;
-function connectToDB() {
+exports.default = editUser;
+const createError_1 = __importDefault(require("../../../errors/createError"));
+const User_1 = __importDefault(require("../schema/User"));
+function editUser(id, userInfo) {
     return __awaiter(this, void 0, void 0, function* () {
-        switch (ENVIRONMENT) {
-            case "production":
-                yield (0, mongoAtlas_1.default)();
-                break;
-            case "development":
-            default:
-                yield (0, mongoLocalHost_1.default)();
+        try {
+            const updated = yield User_1.default.findByIdAndUpdate(id, userInfo, { new: true, runValidators: true });
+            if (!updated) {
+                (0, createError_1.default)("Mongoose", "User not found", 404);
+            }
+            else {
+                return updated;
+            }
+        }
+        catch (err) {
+            (0, createError_1.default)("Mongoose", "Internal Server Error", 500, err);
         }
     });
 }

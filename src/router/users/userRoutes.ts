@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import handleError, { catchError } from "../../errors/handleError";
-import { validateLoginBody, validateRegistrationBody } from "./requestValidators";
+import { validateEditUserBody, validateLoginBody, validateRegistrationBody } from "./requestValidators";
 import { registerUser } from "../../db/users/services/registerUser";
 import _ from "lodash";
 import { loginUser } from "../../db/users/services/loginUser";
@@ -8,6 +8,8 @@ import auth from "../../services/auth";
 import createError from "../../errors/createError";
 import getUsers from "../../db/users/services/getUsers";
 import { IUser } from "../../db/users/schema/User";
+import editUser from "../../db/users/services/editUser";
+import deleteUser from "../../db/users/services/deleteUser";
 
 const router = Router();
 
@@ -65,6 +67,41 @@ router.get("/", auth, async (req: Request, res: Response) => {
         }
     } catch (err) {
         catchError(res, err);
+    }
+});
+
+router.put("/:id", auth, async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        const { id } = req.params
+        if (!user || user._id !== id) {
+            createError("Authorization", "You do not have permission to edit this profile", 403);
+        } else {
+            const schemaError = validateEditUserBody(req.body);
+            if (schemaError) {
+                handleError(res, 400, schemaError);
+            } else {
+                const updated = await editUser(id, req.body);
+                res.send(_.pick(updated, ["name", "email", "_id"]));
+            }
+        }
+    } catch (err) {
+        catchError(res, err)
+    }
+});
+
+router.delete("/:id", auth, async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        const { id } = req.params
+        if (!user || user._id !== id) {
+            createError("Authorization", "You do not have permission to delete this profile", 403);
+        } else {
+            const deleted = await deleteUser(id);
+            res.send(_.pick(deleted, ["name", "email", "_id"]));
+        }
+    } catch (err) {
+        catchError(res, err)
     }
 });
 

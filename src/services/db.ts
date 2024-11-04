@@ -5,8 +5,6 @@ import connectToMongoAtlas from "../db/connections/mongoAtlas";
 const ENVIRONMENT = process.env.NODE_ENV;
 
 export default async function connectToDB() {
-    console.log(ENVIRONMENT);
-
     switch (ENVIRONMENT) {
         case "production":
             await connectToMongoAtlas();
