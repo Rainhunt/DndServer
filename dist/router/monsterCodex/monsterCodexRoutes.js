@@ -57,7 +57,7 @@ router.post("/", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0,
                 (0, handleError_1.default)(res, 400, schemaError);
             }
             else {
-                let monster = (0, mapNewMonster_1.mapNewMonster)(req.body);
+                let monster = (0, mapNewMonster_1.mapNewMonster)(req.body, user);
                 monster = yield (0, addMonster_1.addMonster)(monster);
                 res.send(monster);
             }

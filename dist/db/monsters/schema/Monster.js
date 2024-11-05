@@ -73,6 +73,11 @@ const monsterSchema = new mongoose_1.Schema({
     damageTypes: {
         type: damageTypesField_1.default,
         required: true
+    },
+    createdBy: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
 });
 const Monster = (0, mongoose_1.model)("Monster", monsterSchema);

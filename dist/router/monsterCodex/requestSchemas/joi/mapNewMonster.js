@@ -19,8 +19,9 @@ function enumArrayOrModifierArray(requestField, source) {
         source: source
     } : item);
 }
-function mapNewMonster(requestBody, source = "Homebrew") {
+function mapNewMonster(requestBody, user) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+    const source = `homebrew`;
     return new Monster_1.default({
         CR: requestBody.CR,
         name: requestBody.name,
@@ -80,6 +81,7 @@ function mapNewMonster(requestBody, source = "Homebrew") {
             vulnerabilities: enumArrayOrModifierArray(((_h = requestBody.proficiencies) === null || _h === void 0 ? void 0 : _h.vulnerabilities) || [], source),
             immunities: enumArrayOrModifierArray(((_j = requestBody.proficiencies) === null || _j === void 0 ? void 0 : _j.immunities) || [], source),
         },
-        conditionImmunities: requestBody.conditionImmunities
+        conditionImmunities: requestBody.conditionImmunities,
+        createdBy: user._id
     });
 }

@@ -1,4 +1,4 @@
-import { Document, model, Schema } from "mongoose";
+import { Document, model, Schema, Types } from "mongoose";
 import { ICreature } from "../../schemas/creatureSchemas/creature";
 import defaultField from "../../schemas/DefaultField";
 import { ALIGNMENTS, CREATURE_SIZES, CREATURE_TYPES, matchEnum } from "../../../resources/srdEnums";
@@ -12,6 +12,7 @@ import damageTypesField from "../../schemas/creatureSchemas/damageTypesField";
 
 export interface IMonster extends ICreature, Document {
     CR: number
+    createdBy: Schema.Types.ObjectId
 }
 
 const monsterSchema = new Schema<IMonster>({
@@ -76,6 +77,11 @@ const monsterSchema = new Schema<IMonster>({
     },
     damageTypes: {
         type: damageTypesField,
+        required: true
+    },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
         required: true
     }
 });

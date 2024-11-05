@@ -16,7 +16,8 @@ function enumArrayOrModifierArray(requestField: string[] | { value: string, sour
     } : item);
 }
 
-export function mapNewMonster(requestBody: any, source: string = "Homebrew"): IMonster {
+export function mapNewMonster(requestBody: any, user: any): IMonster {
+    const source: string = `homebrew`
     return new Monster({
         CR: requestBody.CR,
         name: requestBody.name,
@@ -76,6 +77,7 @@ export function mapNewMonster(requestBody: any, source: string = "Homebrew"): IM
             vulnerabilities: enumArrayOrModifierArray(requestBody.proficiencies?.vulnerabilities || [], source),
             immunities: enumArrayOrModifierArray(requestBody.proficiencies?.immunities || [], source),
         },
-        conditionImmunities: requestBody.conditionImmunities
+        conditionImmunities: requestBody.conditionImmunities,
+        createdBy: user._id
     })
 }
