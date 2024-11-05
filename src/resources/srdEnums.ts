@@ -12,15 +12,15 @@ export enum ABILITY_SCORES {
 }
 
 export enum ALIGNMENTS {
-    LawfulGood = "lawfulgood",
-    LawfulNeutral = "lawfulneutral",
-    LawfulEvil = "lawfulevil",
-    NeutralGood = "neutralgood",
-    TrueNeutral = "trueneutral",
-    NeutralEvil = "neutralevil",
-    ChaoticGood = "chaoticgood",
-    ChaoticNeutral = "chaoticneutral",
-    ChaoticEvil = "chaoticevil"
+    LawfulGood = "lawful-good",
+    LawfulNeutral = "lawful-neutral",
+    LawfulEvil = "lawful-evil",
+    NeutralGood = "neutral-good",
+    TrueNeutral = "true-neutral",
+    NeutralEvil = "neutral-evil",
+    ChaoticGood = "chaotic-good",
+    ChaoticNeutral = "chaotic-neutral",
+    ChaoticEvil = "chaotic-evil"
 }
 
 export enum ARMOR_TYPES {
@@ -33,6 +33,7 @@ export enum CONDITIONS {
     Blinded = "blinded",
     Charmed = "charmed",
     Deafened = "deafened",
+    Exhausted = "exhausted",
     Frightened = "frightened",
     Grappled = "grappled",
     Incapacitated = "incapacitated",
@@ -112,13 +113,13 @@ export enum LANGUAGES {
     Orc = "orc",
     Primordial = "primordial",
     Sylvan = "sylvan",
-    ThievesCant = "thievescant",
+    ThievesCant = "thieves-cant",
     Undercommon = "undercommon"
 }
 
 export enum SKILLS {
     Acrobatics = "acrobatics",
-    AnimalHandling = "animalhandling",
+    AnimalHandling = "animal-handling",
     Arcana = "arcana",
     Athletics = "athletics",
     Deception = "deception",
@@ -132,7 +133,7 @@ export enum SKILLS {
     Performance = "performance",
     Persuasion = "persuasion",
     Religion = "religion",
-    SleightOfHand = "sleightofhand",
+    SleightOfHand = "sleight-of-hand",
     Stealth = "stealth",
     Survival = "survival"
 }
@@ -146,23 +147,23 @@ export enum SPEED_TYPES {
 }
 
 export enum TOOLS {
-    AlchemistsSupplies = "alchemistssupplies",
-    BrewersSupplies = "breweressupplies",
-    CalligraphersSupplies = "calligrapherssupplies",
-    CarpentersTools = "carpenterstools",
-    CartographersTools = "cartographerstools",
-    CooksUtensils = "cooksutensils",
-    GlassblowersTools = "glassblowerstools",
-    JewelersTools = "jewelerstools",
-    LeatherworkersTools = "leatherworkerstools",
-    MasonsTools = "masonstools",
-    NavigatorsTools = "navigatorstools",
-    PoisonersKit = "poisonerskit",
-    SmithsTools = "smithstools",
-    ThievesTools = "thievestools",
-    TinkersTools = "tinkerstools",
-    WeaversTools = "weaverstools",
-    WoodcarversTools = "woodcarverstools"
+    AlchemistsSupplies = "alchemists-supplies",
+    BrewersSupplies = "breweres-supplies",
+    CalligraphersSupplies = "calligraphers-supplies",
+    CarpentersTools = "carpenters-tools",
+    CartographersTools = "cartographers-tools",
+    CooksUtensils = "cooks-utensils",
+    GlassblowersTools = "glassblowers-tools",
+    JewelersTools = "jewelers-tools",
+    LeatherworkersTools = "leatherworkers-tools",
+    MasonsTools = "masons-tools",
+    NavigatorsTools = "navigators-tools",
+    PoisonersKit = "poisoners-kit",
+    SmithsTools = "smiths-tools",
+    ThievesTools = "thieves-tools",
+    TinkersTools = "tinkers-tools",
+    WeaversTools = "weavers-tools",
+    WoodcarversTools = "woodcarvers-tools"
 }
 
 export enum WEAPON_TYPES {
