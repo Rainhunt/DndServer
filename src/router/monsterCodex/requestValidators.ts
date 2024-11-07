@@ -3,10 +3,10 @@ import newMonsterJoiSchema from "./requestSchemas/joi/newMonster";
 
 const validatorType = config.SCHEMA_VALIDATOR;
 
-export function validateNewMonsterBody(user: object): string | undefined {
+export function validateNewMonsterBody(monster: object): string | undefined {
     switch (validatorType) {
         case "joi":
         default:
-            return newMonsterJoiSchema.validate(user).error?.details[0].message;
+            return newMonsterJoiSchema.validate(monster).error?.details[0].message;
     }
 }
