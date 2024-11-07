@@ -25,6 +25,11 @@ const userSchema = new mongoose_1.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    lastAttempts: {
+        type: [Number],
+        required: true,
+        default: []
     }
 });
 userSchema.pre("save", function (next) {

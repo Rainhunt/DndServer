@@ -10,6 +10,7 @@ export interface IUser extends Document {
     password: string,
     isAdmin: boolean,
     validatePassword: (password: string) => Promise<boolean>;
+    lastAttempts: Array<number>
 }
 
 const userSchema = new Schema<IUser>({
@@ -20,6 +21,11 @@ const userSchema = new Schema<IUser>({
         type: Boolean,
         required: true,
         default: false
+    },
+    lastAttempts: {
+        type: [Number],
+        required: true,
+        default: []
     }
 });
 
