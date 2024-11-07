@@ -1,31 +1,28 @@
-import Monster, { IMonster } from "../../../../db/monsters/schema/Monster";
-import { Modifier } from "../../../../db/schemas/creatureSchemas/Modifier";
-
-function numOrModifierArray(requestField: number | { value: number, source: string }[], source: string): { value: number, source: string }[] {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mapEditMonster = mapEditMonster;
+function numOrModifierArray(requestField, source) {
     return typeof requestField === "number" ? [
         {
             value: requestField,
             source: source
         }
-    ] : requestField
+    ] : requestField;
 }
-
-function enumArrayOrModifierArray(requestField: string[] | { value: string, source: string }[], source: string): { value: string, source: string }[] {
+function enumArrayOrModifierArray(requestField, source) {
     return requestField.map((item) => typeof item === "string" ? {
         value: item,
         source: source
     } : item);
 }
-
-function sumModifierArray(modArr: Modifier<number>[]): number {
+function sumModifierArray(modArr) {
     return modArr.reduce((prev, current) => prev + current.value, 0);
 }
-
-export function mapNewMonster(requestBody: any, user: any): IMonster {
-    const source: string = `homebrew`
-    return new Monster({
+function mapEditMonster(requestBody) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+    const source = `homebrew`;
+    return {
         CR: requestBody.CR,
-        name: requestBody.name,
         size: requestBody.size,
         type: requestBody.type,
         alignment: requestBody.alignment,
@@ -70,19 +67,18 @@ export function mapNewMonster(requestBody: any, user: any): IMonster {
             }
         },
         proficiencies: {
-            skills: enumArrayOrModifierArray(requestBody.proficiencies?.skills || [], source),
-            tools: enumArrayOrModifierArray(requestBody.proficiencies?.tools || [], source),
-            savingThrows: enumArrayOrModifierArray(requestBody.proficiencies?.savingThrows || [], source),
-            weapons: enumArrayOrModifierArray(requestBody.proficiencies?.weapons || [], source),
-            armor: enumArrayOrModifierArray(requestBody.proficiencies?.armor || [], source),
-            languages: enumArrayOrModifierArray(requestBody.proficiencies?.languages || [], source),
+            skills: enumArrayOrModifierArray(((_a = requestBody.proficiencies) === null || _a === void 0 ? void 0 : _a.skills) || [], source),
+            tools: enumArrayOrModifierArray(((_b = requestBody.proficiencies) === null || _b === void 0 ? void 0 : _b.tools) || [], source),
+            savingThrows: enumArrayOrModifierArray(((_c = requestBody.proficiencies) === null || _c === void 0 ? void 0 : _c.savingThrows) || [], source),
+            weapons: enumArrayOrModifierArray(((_d = requestBody.proficiencies) === null || _d === void 0 ? void 0 : _d.weapons) || [], source),
+            armor: enumArrayOrModifierArray(((_e = requestBody.proficiencies) === null || _e === void 0 ? void 0 : _e.armor) || [], source),
+            languages: enumArrayOrModifierArray(((_f = requestBody.proficiencies) === null || _f === void 0 ? void 0 : _f.languages) || [], source),
         },
         damageTypes: {
-            resistances: enumArrayOrModifierArray(requestBody.proficiencies?.resistances || [], source),
-            vulnerabilities: enumArrayOrModifierArray(requestBody.proficiencies?.vulnerabilities || [], source),
-            immunities: enumArrayOrModifierArray(requestBody.proficiencies?.immunities || [], source),
+            resistances: enumArrayOrModifierArray(((_g = requestBody.proficiencies) === null || _g === void 0 ? void 0 : _g.resistances) || [], source),
+            vulnerabilities: enumArrayOrModifierArray(((_h = requestBody.proficiencies) === null || _h === void 0 ? void 0 : _h.vulnerabilities) || [], source),
+            immunities: enumArrayOrModifierArray(((_j = requestBody.proficiencies) === null || _j === void 0 ? void 0 : _j.immunities) || [], source),
         },
         conditionImmunities: requestBody.conditionImmunities,
-        createdBy: user._id
-    })
+    };
 }

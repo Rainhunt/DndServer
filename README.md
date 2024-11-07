@@ -76,21 +76,21 @@ To install and set up the project locally, follow these steps:
 ###  Steps
 1. Clone the repository:
 ```bash
-`git clone https://github.com/Rainhunt/DndServer`
+git clone https://github.com/Rainhunt/DndServer
 ```
 2. Install the libraries:
 ```bash
-`cd dndserver`
-`npm install`
+cd dndserver
+npm install
 ```
 3. Set the necessary ENVs (change the values as necessary):
 ```bash
-`cp .env.example .env`
+cp .env.example .env
 ```
 4. Seed the DB:
 Ensure MongoDB is running if using locally.
 ```bash
-`npm run seed`
+npm run seed
 ```
 
 
@@ -98,12 +98,12 @@ Ensure MongoDB is running if using locally.
 1. Ensure MongoDB is running if using locally.
 2. Start the server:
 ```bash
-`npm start`
+npm start
 ```
 
 3. Send requests, e.g:
 ```bash
-`GET http://localhost:8181/monsters`
+GET http://localhost:8181/monsters
 ```
 
 ## Features

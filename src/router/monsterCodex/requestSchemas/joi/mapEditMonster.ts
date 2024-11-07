@@ -1,4 +1,3 @@
-import Monster, { IMonster } from "../../../../db/monsters/schema/Monster";
 import { Modifier } from "../../../../db/schemas/creatureSchemas/Modifier";
 
 function numOrModifierArray(requestField: number | { value: number, source: string }[], source: string): { value: number, source: string }[] {
@@ -21,11 +20,10 @@ function sumModifierArray(modArr: Modifier<number>[]): number {
     return modArr.reduce((prev, current) => prev + current.value, 0);
 }
 
-export function mapNewMonster(requestBody: any, user: any): IMonster {
+export function mapEditMonster(requestBody: any): any {
     const source: string = `homebrew`
-    return new Monster({
+    return {
         CR: requestBody.CR,
-        name: requestBody.name,
         size: requestBody.size,
         type: requestBody.type,
         alignment: requestBody.alignment,
@@ -83,6 +81,5 @@ export function mapNewMonster(requestBody: any, user: any): IMonster {
             immunities: enumArrayOrModifierArray(requestBody.proficiencies?.immunities || [], source),
         },
         conditionImmunities: requestBody.conditionImmunities,
-        createdBy: user._id
-    })
+    }
 }

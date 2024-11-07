@@ -45,7 +45,7 @@ router.get("/:id", auth, async (req: Request, res: Response) => {
     try {
         const user = req.user;
         const { id } = req.params;
-        if (!user || user._id !== id && !user.isAdmin) {
+        if (!user || (user._id !== id && !user.isAdmin)) {
             createError("Authorization", "You do not have permission to access this profile", 403);
         } else {
             const user = await getUsers(id) as IUser;
@@ -74,7 +74,7 @@ router.put("/:id", auth, async (req: Request, res: Response) => {
     try {
         const user = req.user;
         const { id } = req.params
-        if (!user || user._id !== id) {
+        if (!user || (user._id !== id && !user.isAdmin)) {
             createError("Authorization", "You do not have permission to edit this profile", 403);
         } else {
             const schemaError = validateEditUserBody(req.body);
@@ -94,7 +94,7 @@ router.delete("/:id", auth, async (req: Request, res: Response) => {
     try {
         const user = req.user;
         const { id } = req.params
-        if (!user || user._id !== id) {
+        if (!user || (user._id !== id && !user.isAdmin)) {
             createError("Authorization", "You do not have permission to delete this profile", 403);
         } else {
             const deleted = await deleteUser(id);

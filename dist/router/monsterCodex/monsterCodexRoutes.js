@@ -46,6 +46,8 @@ const getMonsters_1 = __importDefault(require("../../db/monsters/services/getMon
 const getMyMonsters_1 = __importDefault(require("../../db/monsters/services/getMyMonsters"));
 const createError_1 = __importDefault(require("../../errors/createError"));
 const deleteMonster_1 = __importDefault(require("../../db/monsters/services/deleteMonster"));
+const editMonster_1 = __importDefault(require("../../db/monsters/services/editMonster"));
+const mapEditMonster_1 = require("./requestSchemas/joi/mapEditMonster");
 const router = (0, express_1.Router)();
 exports.monsterCodexRouter = router;
 router.post("/", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -75,14 +77,39 @@ router.delete("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, vo
         const user = req.user;
         const { id } = req.params;
         const monster = yield (0, getMonsters_1.default)(id);
-        console.log(monster.createdBy.toString());
-        console.log(user === null || user === void 0 ? void 0 : user._id);
         if (!user || (user._id !== monster.createdBy.toString() && !user.isAdmin)) {
             (0, createError_1.default)("Authorization", "You do not have permission to delete this monster", 403);
         }
         else {
             const deleted = yield (0, deleteMonster_1.default)(id);
             res.send(deleted);
+        }
+    }
+    catch (err) {
+        (0, handleError_1.catchError)(res, err);
+    }
+}));
+router.put("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = req.user;
+        const { id } = req.params;
+        const monster = yield (0, getMonsters_1.default)(id);
+        if (!user) {
+            (0, handleError_1.default)(res, 403, "You must be logged in to edit your monsters");
+        }
+        else if (monster.createdBy.toString() !== user._id && !user.isAdmin) {
+            (0, createError_1.default)("Authorization", "You do not have permission to edit this monster", 403);
+        }
+        else {
+            const schemaError = (0, requestValidators_1.validateEditMonsterBody)(req.body);
+            if (schemaError) {
+                (0, handleError_1.default)(res, 400, schemaError);
+            }
+            else {
+                let editedMonster = (0, mapEditMonster_1.mapEditMonster)(req.body);
+                editedMonster = yield (0, editMonster_1.default)(id, editedMonster);
+                res.send(editedMonster);
+            }
         }
     }
     catch (err) {

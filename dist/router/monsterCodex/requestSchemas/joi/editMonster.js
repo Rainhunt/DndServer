@@ -5,69 +5,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 const srdEnums_1 = require("../../../../resources/srdEnums");
-function numberModifierArray(min = 1, max = 1000000) {
-    return joi_1.default.array().items(joi_1.default.object({
+function numOrModifierArray(min = 1, max = 1000000) {
+    return joi_1.default.alternatives().try(joi_1.default.number().integer().min(min).max(max), joi_1.default.array().items(joi_1.default.object({
         value: joi_1.default.number().integer().min(min).max(max).required(),
         source: joi_1.default.string().min(2).max(256).required()
-    }));
+    }))).required().messages({
+        "alternatives.types": "{#label} must be a number or a modifier array"
+    });
 }
-function enumModifierArray(enumType) {
-    return joi_1.default.array().items(joi_1.default.object({
+function enumArrayOrModifierArray(enumType) {
+    return joi_1.default.array().items(joi_1.default.alternatives().try(joi_1.default.string().valid(...Object.values(enumType)).required(), joi_1.default.object({
         value: joi_1.default.string().valid(...Object.values(enumType)).required(),
         source: joi_1.default.string().min(2).max(256).required()
-    }));
+    }))).required().messages({
+        "alternatives.types": "{#label} must be an string or a modifier"
+    });
 }
 const editMonsterJoiSchema = joi_1.default.object({
     CR: joi_1.default.number().integer().min(0).max(40).required(),
-    name: joi_1.default.string().min(2).max(256).required(),
     size: joi_1.default.string().valid(...Object.values(srdEnums_1.CREATURE_SIZES)).required(),
     type: joi_1.default.string().valid(...Object.values(srdEnums_1.CREATURE_TYPES)).required(),
     alignment: joi_1.default.string().valid(...Object.values(srdEnums_1.ALIGNMENTS)).required(),
-    armorClass: joi_1.default.object({
-        base: numberModifierArray(1, 40).required(),
-        modifiers: numberModifierArray(1, 40).required()
-    }).required(),
-    hitPoints: joi_1.default.object({
-        sources: numberModifierArray().required()
-    }).required(),
-    speed: joi_1.default.array().items(joi_1.default.object({
+    armorClass: numOrModifierArray(1, 40),
+    hitPoints: numOrModifierArray(),
+    speed: joi_1.default.alternatives().try(joi_1.default.number().integer().min(1).max(1000000), joi_1.default.array().items(joi_1.default.object({
         type: joi_1.default.string().valid(...Object.values(srdEnums_1.SPEED_TYPES)).required(),
-        base: numberModifierArray().required()
-    })).required(),
+        base: numOrModifierArray()
+    }))).required().messages({
+        "alternatives.types": "{#label} must be a number or an array of speed objects"
+    }),
     abilityScores: joi_1.default.object({
-        CHA: joi_1.default.object({
-            base: numberModifierArray(1, 100).required()
-        }).required(),
-        CON: joi_1.default.object({
-            base: numberModifierArray(1, 100).required()
-        }).required(),
-        DEX: joi_1.default.object({
-            base: numberModifierArray(1, 100).required()
-        }).required(),
-        INT: joi_1.default.object({
-            base: numberModifierArray(1, 100).required()
-        }).required(),
-        STR: joi_1.default.object({
-            base: numberModifierArray(1, 100).required()
-        }).required(),
-        WIS: joi_1.default.object({
-            base: numberModifierArray(1, 100).required()
-        }).required()
+        CHA: numOrModifierArray(1, 100),
+        CON: numOrModifierArray(1, 100),
+        DEX: numOrModifierArray(1, 100),
+        INT: numOrModifierArray(1, 100),
+        STR: numOrModifierArray(1, 100),
+        WIS: numOrModifierArray(1, 100)
     }).required(),
     proficiencies: joi_1.default.object({
-        skills: enumModifierArray(srdEnums_1.SKILLS).required(),
-        tools: enumModifierArray(srdEnums_1.TOOLS).required(),
-        savingThrows: enumModifierArray(srdEnums_1.ABILITY_SCORES).required(),
-        weapons: enumModifierArray(srdEnums_1.WEAPON_TYPES).required(),
-        armor: enumModifierArray(srdEnums_1.ARMOR_TYPES).required(),
-        languages: enumModifierArray(srdEnums_1.LANGUAGES).required()
-    }).required(),
-    damageTypes: joi_1.default.object({
-        resistances: enumModifierArray(srdEnums_1.DAMAGE_TYPES).required(),
-        vulnerabilities: enumModifierArray(srdEnums_1.DAMAGE_TYPES).required(),
-        immunities: enumModifierArray(srdEnums_1.DAMAGE_TYPES).required()
+        skills: enumArrayOrModifierArray(srdEnums_1.SKILLS).optional(),
+        tools: enumArrayOrModifierArray(srdEnums_1.TOOLS).optional(),
+        savingThrows: enumArrayOrModifierArray(srdEnums_1.ABILITY_SCORES).optional(),
+        weapons: enumArrayOrModifierArray(srdEnums_1.WEAPON_TYPES).optional(),
+        armor: enumArrayOrModifierArray(srdEnums_1.ARMOR_TYPES).optional(),
+        languages: enumArrayOrModifierArray(srdEnums_1.LANGUAGES).optional()
     }).optional(),
-    conditionImmunities: enumModifierArray(srdEnums_1.CONDITIONS).required()
+    damageTypes: joi_1.default.object({
+        resistances: enumArrayOrModifierArray(srdEnums_1.DAMAGE_TYPES).optional(),
+        vulnerabilities: enumArrayOrModifierArray(srdEnums_1.DAMAGE_TYPES).optional(),
+        immunities: enumArrayOrModifierArray(srdEnums_1.DAMAGE_TYPES).optional()
+    }).optional(),
+    conditionImmunities: enumArrayOrModifierArray(srdEnums_1.CONDITIONS).optional()
 }).messages({
     "any.required": "{#label} is required",
     "string.base": "{#label} must be a string",

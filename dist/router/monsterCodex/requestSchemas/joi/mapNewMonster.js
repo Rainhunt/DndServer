@@ -19,6 +19,9 @@ function enumArrayOrModifierArray(requestField, source) {
         source: source
     } : item);
 }
+function sumModifierArray(modArr) {
+    return modArr.reduce((prev, current) => prev + current.value, 0);
+}
 function mapNewMonster(requestBody, user) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const source = `homebrew`;
@@ -33,7 +36,7 @@ function mapNewMonster(requestBody, user) {
         },
         hitPoints: {
             current: typeof requestBody.hitPoints === "number" ? requestBody.hitPoints
-                : requestBody.armorClass,
+                : sumModifierArray(requestBody.hitPoints),
             temp: 0,
             sources: numOrModifierArray(requestBody.hitPoints, source)
         },

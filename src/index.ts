@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express, { Express, NextFunction, request, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import corsOrigins from "./middlewares/cors";
 import logger from "./services/logger";
 import handleError from "./errors/handleError";

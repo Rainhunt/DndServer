@@ -2,7 +2,6 @@ import { disconnect } from "mongoose";
 import connectToDB from "../services/db";
 import seedMonsters from "./monsters";
 import seedUsers from "./users";
-import User from "../db/users/schema/User";
 import chalk from "chalk";
 
 async function seedDB() {
