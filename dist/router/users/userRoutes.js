@@ -83,7 +83,7 @@ router.get("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 
     try {
         const user = req.user;
         const { id } = req.params;
-        if (!user || user._id !== id && !user.isAdmin) {
+        if (!user || (user._id !== id && !user.isAdmin)) {
             (0, createError_1.default)("Authorization", "You do not have permission to access this profile", 403);
         }
         else {
@@ -114,7 +114,7 @@ router.put("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 
     try {
         const user = req.user;
         const { id } = req.params;
-        if (!user || user._id !== id) {
+        if (!user || (user._id !== id && !user.isAdmin)) {
             (0, createError_1.default)("Authorization", "You do not have permission to edit this profile", 403);
         }
         else {
@@ -136,7 +136,7 @@ router.delete("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, vo
     try {
         const user = req.user;
         const { id } = req.params;
-        if (!user || user._id !== id) {
+        if (!user || (user._id !== id && !user.isAdmin)) {
             (0, createError_1.default)("Authorization", "You do not have permission to delete this profile", 403);
         }
         else {

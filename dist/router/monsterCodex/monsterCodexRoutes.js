@@ -72,18 +72,35 @@ router.post("/", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0,
         (0, handleError_1.catchError)(res, err);
     }
 }));
-router.delete("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/my-creations", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.user;
-        const { id } = req.params;
-        const monster = yield (0, getMonsters_1.default)(id);
-        if (!user || (user._id !== monster.createdBy.toString() && !user.isAdmin)) {
-            (0, createError_1.default)("Authorization", "You do not have permission to delete this monster", 403);
+        if (!user) {
+            (0, handleError_1.default)(res, 403, "You must be logged in to get your monsters");
         }
         else {
-            const deleted = yield (0, deleteMonster_1.default)(id);
-            res.send(deleted);
+            const monsters = yield (0, getMyMonsters_1.default)(user._id);
+            res.send(monsters);
         }
+    }
+    catch (err) {
+        (0, handleError_1.catchError)(res, err);
+    }
+}));
+router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const monster = yield (0, getMonsters_1.default)(id);
+        res.send(monster);
+    }
+    catch (err) {
+        (0, handleError_1.catchError)(res, err);
+    }
+}));
+router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const monsters = yield (0, getMonsters_1.default)();
+        res.send(monsters);
     }
     catch (err) {
         (0, handleError_1.catchError)(res, err);
@@ -116,35 +133,18 @@ router.put("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 
         (0, handleError_1.catchError)(res, err);
     }
 }));
-router.get("/my-creations", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.delete("/:id", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.user;
-        if (!user) {
-            (0, handleError_1.default)(res, 403, "You must be logged in to get your monsters");
-        }
-        else {
-            const monsters = yield (0, getMyMonsters_1.default)(user._id);
-            res.send(monsters);
-        }
-    }
-    catch (err) {
-        (0, handleError_1.catchError)(res, err);
-    }
-}));
-router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
         const { id } = req.params;
         const monster = yield (0, getMonsters_1.default)(id);
-        res.send(monster);
-    }
-    catch (err) {
-        (0, handleError_1.catchError)(res, err);
-    }
-}));
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const monsters = yield (0, getMonsters_1.default)();
-        res.send(monsters);
+        if (!user || (user._id !== monster.createdBy.toString() && !user.isAdmin)) {
+            (0, createError_1.default)("Authorization", "You do not have permission to delete this monster", 403);
+        }
+        else {
+            const deleted = yield (0, deleteMonster_1.default)(id);
+            res.send(deleted);
+        }
     }
     catch (err) {
         (0, handleError_1.catchError)(res, err);
