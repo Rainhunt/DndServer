@@ -3,11 +3,7 @@
 
   
 
-An Express application that provides a RESTful API for referencing the SRD and writing your own homebrew. This project demonstrates basic CRUD operations (Create, Read, Update, Delete) and includes user authentication using JWT.
-
-  
-
-##  Table of Contents
+Welcome to the DND Server Project, an Express.js application designed to facilitate the management of Dungeons & Dragons (DND) resources through a RESTful API. This API allows players, Dungeon Masters, and developers to interact with the System Reference Document (SRD) and manage their own homebrew content, including monsters, character data, and more.
 
   
 
@@ -350,7 +346,6 @@ Edits an existing monster. A user can only edit their own monsters unless they a
 **Request Body:**  
 ```json
 {
-	"name":  Required. A string between 2 and 256 characters long,
 	"CR": Required. A number between 0 and 40,
 	"alignment":  Required. A value from the ALIGNMENTS enum,
 	"type":  Required. A value from the CREATURE_TYPES enum,

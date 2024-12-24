@@ -19,6 +19,7 @@ function seedMonsters(admin) {
     return __awaiter(this, void 0, void 0, function* () {
         const monsters = [
             {
+                biome: "underworld",
                 CR: 1,
                 name: "goblin",
                 size: "small",
@@ -118,6 +119,7 @@ function seedMonsters(admin) {
                 createdBy: admin
             },
             {
+                biome: "underworld",
                 CR: 2,
                 name: "mimic",
                 size: "medium",
@@ -210,6 +212,7 @@ function seedMonsters(admin) {
                 createdBy: admin
             },
             {
+                biome: "crypt",
                 CR: 21,
                 name: "lich",
                 size: "medium",

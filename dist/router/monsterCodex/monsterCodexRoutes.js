@@ -87,6 +87,15 @@ router.get("/my-creations", auth_1.default, (req, res) => __awaiter(void 0, void
         (0, handleError_1.catchError)(res, err);
     }
 }));
+router.get("/full-statblock", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const monsters = yield (0, getMonsters_1.default)();
+        res.send(monsters);
+    }
+    catch (err) {
+        (0, handleError_1.catchError)(res, err);
+    }
+}));
 router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;

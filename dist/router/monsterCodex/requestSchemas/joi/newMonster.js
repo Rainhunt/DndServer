@@ -22,6 +22,7 @@ function enumArrayOrModifierArray(enumType) {
     });
 }
 const newMonsterJoiSchema = joi_1.default.object({
+    biome: joi_1.default.string().valid(...Object.values(srdEnums_1.BIOMES)).required(),
     CR: joi_1.default.number().integer().min(0).max(40).required(),
     name: joi_1.default.string().min(2).max(256).required(),
     size: joi_1.default.string().valid(...Object.values(srdEnums_1.CREATURE_SIZES)).required(),

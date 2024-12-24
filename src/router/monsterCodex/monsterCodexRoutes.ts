@@ -11,6 +11,7 @@ import deleteMonster from "../../db/monsters/services/deleteMonster";
 import { IMonster } from "../../db/monsters/schema/Monster";
 import editMonster from "../../db/monsters/services/editMonster";
 import { mapEditMonster } from "./requestSchemas/joi/mapEditMonster";
+import _ from "lodash";
 
 const router = Router();
 
@@ -43,6 +44,15 @@ router.get("/my-creations", auth, async (req: Request, res: Response) => {
             const monsters = await getMyMonsters(user._id);
             res.send(monsters);
         }
+    } catch (err) {
+        catchError(res, err);
+    }
+});
+
+router.get("/full-statblock", async (req: Request, res: Response) => {
+    try {
+        const monsters = await getMonsters();
+        res.send(monsters);
     } catch (err) {
         catchError(res, err);
     }

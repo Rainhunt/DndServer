@@ -1,5 +1,5 @@
 import Joi, { AlternativesSchema, ArraySchema } from "joi";
-import { ABILITY_SCORES, ALIGNMENTS, ARMOR_TYPES, CONDITIONS, CREATURE_SIZES, CREATURE_TYPES, DAMAGE_TYPES, LANGUAGES, SKILLS, SPEED_TYPES, TOOLS, WEAPON_TYPES } from "../../../../resources/srdEnums";
+import { ABILITY_SCORES, ALIGNMENTS, ARMOR_TYPES, BIOMES, CONDITIONS, CREATURE_SIZES, CREATURE_TYPES, DAMAGE_TYPES, LANGUAGES, SKILLS, SPEED_TYPES, TOOLS, WEAPON_TYPES } from "../../../../resources/srdEnums";
 
 function numOrModifierArray(min = 1, max = 1000000): AlternativesSchema {
     return Joi.alternatives().try(
@@ -27,6 +27,7 @@ function enumArrayOrModifierArray(enumType: Record<string, string>): ArraySchema
 }
 
 const newMonsterJoiSchema = Joi.object({
+    biome: Joi.string().valid(...Object.values(BIOMES)).required(),
     CR: Joi.number().integer().min(0).max(40).required(),
     name: Joi.string().min(2).max(256).required(),
     size: Joi.string().valid(...Object.values(CREATURE_SIZES)).required(),

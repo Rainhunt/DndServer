@@ -26,6 +26,7 @@ function mapNewMonster(requestBody, user) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const source = `homebrew`;
     return new Monster_1.default({
+        biome: requestBody.biome,
         CR: requestBody.CR,
         name: requestBody.name,
         size: requestBody.size,

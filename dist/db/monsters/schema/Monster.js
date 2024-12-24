@@ -14,6 +14,11 @@ const ProficienciesField_1 = __importDefault(require("../../schemas/creatureSche
 const conditionImmunities_1 = __importDefault(require("../../schemas/creatureSchemas/conditionImmunities"));
 const damageTypesField_1 = __importDefault(require("../../schemas/creatureSchemas/damageTypesField"));
 const monsterSchema = new mongoose_1.Schema({
+    biome: {
+        type: String,
+        required: true,
+        match: (0, srdEnums_1.matchEnum)(srdEnums_1.BIOMES)
+    },
     CR: {
         type: Number,
         required: true,

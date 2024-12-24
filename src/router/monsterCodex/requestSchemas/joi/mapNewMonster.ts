@@ -24,6 +24,7 @@ function sumModifierArray(modArr: Modifier<number>[]): number {
 export function mapNewMonster(requestBody: any, user: any): IMonster {
     const source: string = `homebrew`
     return new Monster({
+        biome: requestBody.biome,
         CR: requestBody.CR,
         name: requestBody.name,
         size: requestBody.size,

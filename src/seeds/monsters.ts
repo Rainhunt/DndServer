@@ -6,6 +6,7 @@ import { addMonster } from "../db/monsters/services/addMonster";
 export default async function seedMonsters(admin: string | undefined) {
     const monsters: any = [
         {
+            biome: "underworld",
             CR: 1,
             name: "goblin",
             size: "small",
@@ -105,6 +106,7 @@ export default async function seedMonsters(admin: string | undefined) {
             createdBy: admin
         },
         {
+            biome: "underworld",
             CR: 2,
             name: "mimic",
             size: "medium",
@@ -197,6 +199,7 @@ export default async function seedMonsters(admin: string | undefined) {
             createdBy: admin
         },
         {
+            biome: "crypt",
             CR: 21,
             name: "lich",
             size: "medium",

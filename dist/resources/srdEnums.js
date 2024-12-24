@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WEAPON_TYPES = exports.TOOLS = exports.SPEED_TYPES = exports.SKILLS = exports.LANGUAGES = exports.DICE = exports.DAMAGE_TYPES = exports.CREATURE_TYPES = exports.CREATURE_SIZES = exports.CONDITIONS = exports.ARMOR_TYPES = exports.ALIGNMENTS = exports.ABILITY_SCORES = void 0;
+exports.WEAPON_TYPES = exports.TOOLS = exports.SPEED_TYPES = exports.SKILLS = exports.LANGUAGES = exports.DICE = exports.DAMAGE_TYPES = exports.CREATURE_TYPES = exports.CREATURE_SIZES = exports.CONDITIONS = exports.BIOMES = exports.ARMOR_TYPES = exports.ALIGNMENTS = exports.ABILITY_SCORES = void 0;
 exports.matchEnum = matchEnum;
 function matchEnum(enumType) {
     return RegExp(`^(${Object.values(enumType).join("|")})$`);
@@ -32,6 +32,19 @@ var ARMOR_TYPES;
     ARMOR_TYPES["Medium"] = "medium";
     ARMOR_TYPES["Heavy"] = "heavy";
 })(ARMOR_TYPES || (exports.ARMOR_TYPES = ARMOR_TYPES = {}));
+var BIOMES;
+(function (BIOMES) {
+    BIOMES["Crypt"] = "crypt";
+    BIOMES["Desert"] = "desert";
+    BIOMES["Forest"] = "forest";
+    BIOMES["Mountain"] = "mountain";
+    BIOMES["Ocean"] = "ocean";
+    BIOMES["Sky"] = "sky";
+    BIOMES["Swamp"] = "swamp";
+    BIOMES["Underworld"] = "underworld";
+    BIOMES["Urban"] = "urban";
+    BIOMES["Wasteland"] = "wasteland";
+})(BIOMES || (exports.BIOMES = BIOMES = {}));
 var CONDITIONS;
 (function (CONDITIONS) {
     CONDITIONS["Blinded"] = "blinded";

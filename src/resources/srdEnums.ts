@@ -29,6 +29,19 @@ export enum ARMOR_TYPES {
     Heavy = "heavy"
 }
 
+export enum BIOMES {
+    Crypt = "crypt",
+    Desert = "desert",
+    Forest = "forest",
+    Mountain = "mountain",
+    Ocean = "ocean",
+    Sky = "sky",
+    Swamp = "swamp",
+    Underworld = "underworld",
+    Urban = "urban",
+    Wasteland = "wasteland"
+}
+
 export enum CONDITIONS {
     Blinded = "blinded",
     Charmed = "charmed",

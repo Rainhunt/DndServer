@@ -1,7 +1,7 @@
 import { Document, model, Schema, Types } from "mongoose";
 import { ICreature } from "../../schemas/creatureSchemas/creature";
 import defaultField from "../../schemas/DefaultField";
-import { ALIGNMENTS, CREATURE_SIZES, CREATURE_TYPES, matchEnum } from "../../../resources/srdEnums";
+import { ALIGNMENTS, BIOMES, CREATURE_SIZES, CREATURE_TYPES, matchEnum } from "../../../resources/srdEnums";
 import armorClassField from "../../schemas/creatureSchemas/ArmorClassField";
 import hitPointsField from "../../schemas/creatureSchemas/HitPointsField";
 import speedField from "../../schemas/creatureSchemas/SpeedField";
@@ -12,10 +12,16 @@ import damageTypesField from "../../schemas/creatureSchemas/damageTypesField";
 
 export interface IMonster extends ICreature, Document {
     CR: number
+    biome: BIOMES
     createdBy: Schema.Types.ObjectId
 }
 
 const monsterSchema = new Schema<IMonster>({
+    biome: {
+        type: String,
+        required: true,
+        match: matchEnum(BIOMES)
+    },
     CR: {
         type: Number,
         required: true,
