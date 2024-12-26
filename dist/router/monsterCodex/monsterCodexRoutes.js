@@ -48,6 +48,7 @@ const createError_1 = __importDefault(require("../../errors/createError"));
 const deleteMonster_1 = __importDefault(require("../../db/monsters/services/deleteMonster"));
 const editMonster_1 = __importDefault(require("../../db/monsters/services/editMonster"));
 const mapEditMonster_1 = require("./requestSchemas/joi/mapEditMonster");
+const lodash_1 = __importDefault(require("lodash"));
 const router = (0, express_1.Router)();
 exports.monsterCodexRouter = router;
 router.post("/", auth_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -109,7 +110,7 @@ router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const monsters = yield (0, getMonsters_1.default)();
-        res.send(monsters);
+        res.send(monsters.map(monster => lodash_1.default.pick(monster, ["_id", "biome", "CR", "name", "size", "type", "alignment", "hitPoints.current"])));
     }
     catch (err) {
         (0, handleError_1.catchError)(res, err);
