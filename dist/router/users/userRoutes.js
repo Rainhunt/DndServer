@@ -66,14 +66,8 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
 }));
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const schemaError = (0, requestValidators_1.validateLoginBody)(req.body);
-        if (schemaError) {
-            (0, handleError_1.default)(res, 400, schemaError);
-        }
-        else {
-            const token = yield (0, loginUser_1.loginUser)(req.body.email, req.body.password);
-            res.send(token);
-        }
+        const token = yield (0, loginUser_1.loginUser)(req.body.email, req.body.password);
+        res.send(token);
     }
     catch (err) {
         (0, handleError_1.catchError)(res, err);

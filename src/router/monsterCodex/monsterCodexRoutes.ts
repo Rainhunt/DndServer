@@ -71,7 +71,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.get("/", async (req: Request, res: Response) => {
     try {
         const monsters = await getMonsters() as IMonster[];
-        res.send(monsters.map(monster => _.pick(monster, ["_id", "biome", "CR", "name", "size", "type", "alignment", "hitPoints.current"])));
+        res.send(monsters.map(monster => _.pick(monster, ["_id", "biome", "CR", "name", "size", "type", "alignment", "hitPoints.max"])));
     } catch (err) {
         catchError(res, err);
     }

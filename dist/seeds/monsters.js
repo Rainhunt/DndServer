@@ -324,7 +324,7 @@ function seedMonsters(admin) {
                     ],
                     immunities: [
                         {
-                            value: "cold",
+                            value: "poison",
                             source: "SRD"
                         },
                         {

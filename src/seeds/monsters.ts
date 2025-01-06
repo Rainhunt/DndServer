@@ -311,7 +311,7 @@ export default async function seedMonsters(admin: string | undefined) {
                 ],
                 immunities: [
                     {
-                        value: "cold",
+                        value: "poison",
                         source: "SRD"
                     },
                     {

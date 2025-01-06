@@ -110,7 +110,7 @@ router.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const monsters = yield (0, getMonsters_1.default)();
-        res.send(monsters.map(monster => lodash_1.default.pick(monster, ["_id", "biome", "CR", "name", "size", "type", "alignment", "hitPoints.current"])));
+        res.send(monsters.map(monster => lodash_1.default.pick(monster, ["_id", "biome", "CR", "name", "size", "type", "alignment", "hitPoints.max"])));
     }
     catch (err) {
         (0, handleError_1.catchError)(res, err);

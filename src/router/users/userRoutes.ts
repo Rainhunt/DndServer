@@ -29,13 +29,8 @@ router.post("/signup", async (req: Request, res: Response) => {
 
 router.post("/login", async (req: Request, res: Response) => {
     try {
-        const schemaError = validateLoginBody(req.body);
-        if (schemaError) {
-            handleError(res, 400, schemaError);
-        } else {
-            const token = await loginUser(req.body.email, req.body.password);
-            res.send(token);
-        }
+        const token = await loginUser(req.body.email, req.body.password);
+        res.send(token);
     } catch (err) {
         catchError(res, err);
     }
