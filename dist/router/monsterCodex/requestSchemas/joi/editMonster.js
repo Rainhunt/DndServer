@@ -22,7 +22,7 @@ function enumArrayOrModifierArray(enumType) {
     });
 }
 const editMonsterJoiSchema = joi_1.default.object({
-    CR: joi_1.default.number().integer().min(0).max(40).required(),
+    CR: joi_1.default.alternatives().try(joi_1.default.number().integer().min(1).max(40).required(), joi_1.default.number().valid(0.125, 0.25, 0.5)),
     size: joi_1.default.string().valid(...Object.values(srdEnums_1.CREATURE_SIZES)).required(),
     type: joi_1.default.string().valid(...Object.values(srdEnums_1.CREATURE_TYPES)).required(),
     alignment: joi_1.default.string().valid(...Object.values(srdEnums_1.ALIGNMENTS)).required(),

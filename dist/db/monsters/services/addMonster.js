@@ -20,7 +20,7 @@ function addMonster(newMonster) {
         try {
             let monster = new Monster_1.default(newMonster);
             monster = yield monster.save();
-            return monster;
+            return monster.toObject({ virtuals: true });
         }
         catch (err) {
             if (err instanceof Error) {

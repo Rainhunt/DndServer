@@ -27,7 +27,10 @@ function enumArrayOrModifierArray(enumType: Record<string, string>): ArraySchema
 }
 
 const editMonsterJoiSchema = Joi.object({
-    CR: Joi.number().integer().min(0).max(40).required(),
+    CR: Joi.alternatives().try(
+        Joi.number().integer().min(1).max(40).required(),
+        Joi.number().valid(0.125, 0.25, 0.5)
+    ),
     size: Joi.string().valid(...Object.values(CREATURE_SIZES)).required(),
     type: Joi.string().valid(...Object.values(CREATURE_TYPES)).required(),
     alignment: Joi.string().valid(...Object.values(ALIGNMENTS)).required(),

@@ -5,7 +5,7 @@ export async function addMonster(newMonster: IMonster): Promise<IMonster> {
     try {
         let monster: IMonster = new Monster(newMonster);
         monster = await monster.save();
-        return monster;
+        return monster.toObject({ virtuals: true });
     } catch (err) {
         if (err instanceof Error) {
             createError("Mongoose", err.message, 409);
