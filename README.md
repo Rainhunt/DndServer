@@ -310,7 +310,7 @@ Creates a new monster entry. Attaches the provided `user_id` ref (in the jwt) to
 
 #### GET `/monsters/my-creations`
 **Description:**  
-Fetches the details of a specific monster by its ID.
+Fetches a list of monsters created by the user.
 
 **Request Header:**  
 - `x-auth-token`: JWT_TOKEN
@@ -319,7 +319,7 @@ Fetches the details of a specific monster by its ID.
 
 #### GET `/monsters/:id`
 **Description:**  
-Fetches the user profile for a given user ID. An authenticated user can view their own profile and an admin can view any user profile.
+Fetches the monster statblock for a given user ID.
 
 **Request Parameters:**  
 - `id`: The ID of the monster to retrieve.
@@ -329,6 +329,12 @@ Fetches the user profile for a given user ID. An authenticated user can view the
 #### GET `/monsters`
 **Description:**  
 Fetches a list of all monsters.
+
+---
+
+#### GET `/monsters/full-statblock`
+**Description:**  
+Fetches a more detailed list of all monsters
 
 ---
 

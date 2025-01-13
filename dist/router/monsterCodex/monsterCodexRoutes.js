@@ -81,7 +81,7 @@ router.get("/my-creations", auth_1.default, (req, res) => __awaiter(void 0, void
         }
         else {
             const monsters = yield (0, getMyMonsters_1.default)(user._id);
-            res.send(monsters);
+            res.send(monsters.map(monster => lodash_1.default.pick(monster, ["_id", "biome", "CR", "name", "size", "type", "alignment", "hitPoints.max"])));
         }
     }
     catch (err) {

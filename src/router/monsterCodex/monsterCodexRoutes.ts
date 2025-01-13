@@ -42,7 +42,7 @@ router.get("/my-creations", auth, async (req: Request, res: Response) => {
             handleError(res, 403, "You must be logged in to get your monsters");
         } else {
             const monsters = await getMyMonsters(user._id);
-            res.send(monsters);
+            res.send(monsters.map(monster => _.pick(monster, ["_id", "biome", "CR", "name", "size", "type", "alignment", "hitPoints.max"])));
         }
     } catch (err) {
         catchError(res, err);
