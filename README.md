@@ -94,7 +94,8 @@ npm run seed
 1. Ensure MongoDB is running if using locally.
 2. Start the server:
 ```bash
-npm start
+npm start #Ensure ATLAS connection string is correct (in .env)
+npm run dev #Ensure MongoDB is running locally and LH connection string is correct (in .env)
 ```
 
 3. Send requests, e.g:
