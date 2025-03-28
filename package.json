@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "npx tsc && cross-env NODE_ENV=development node dist/index",
     "start": "cross-env NODE_ENV=production node dist/index",
-    "seed": "node dist/seeds/seedDB"
+    "seed": "node dist/seeds/seedDB",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -31,10 +32,13 @@
     "@types/config": "^3.3.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/lodash": "^4.17.12",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.7.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.0",
     "typescript": "^5.6.3"
   }
 }
