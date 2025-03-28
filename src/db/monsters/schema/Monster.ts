@@ -85,6 +85,14 @@ const monsterSchema = new Schema<IMonster>({
         type: damageTypesField,
         required: true
     },
+    image: {
+        type: String,
+        required: false // explicitly mark it as optional
+    },
+    map_image: {
+        type: String,
+        required: false // explicitly mark it as optional
+    },
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: "User",
