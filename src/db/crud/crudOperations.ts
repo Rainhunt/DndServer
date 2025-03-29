@@ -19,7 +19,6 @@ export async function createEntity<T extends Document>(
   }
 }
 
-// Generic Read function
 export async function getEntity<T extends Document>(
   model: Model<T>,
   id?: string
@@ -30,17 +29,22 @@ export async function getEntity<T extends Document>(
       if (entity) {
         return entity;
       } else {
-        createError("Mongoose", "Entity not found", 404);
+        // Throw the error so it can be caught below.
+        throw createError("Mongoose", "Entity not found", 404);
       }
     } else {
       return await model.find();
     }
   } catch (err) {
-    createError("Mongoose", "Internal Server Error", 500, err);
+    // If the error message is already "Entity not found", rethrow it.
+    if (err instanceof Error && err.message === "Entity not found") {
+      throw err;
+    }
+    // Otherwise, throw a more generic internal error.
+    throw createError("Mongoose", "Internal Server Error", 500, err);
   }
 }
 
-// Generic Update function
 export async function updateEntity<T extends Document>(
   model: Model<T>,
   id: string,
@@ -49,16 +53,17 @@ export async function updateEntity<T extends Document>(
   try {
     const updated = await model.findByIdAndUpdate(id, data, { new: true, runValidators: true });
     if (!updated) {
-      createError("Mongoose", "Entity not found", 404);
-    } else {
-      return updated;
+      throw createError("Mongoose", "Entity not found", 404);
     }
+    return updated;
   } catch (err) {
-    createError("Mongoose", "Internal Server Error", 500, err);
+    if (err instanceof Error && err.message === "Entity not found") {
+      throw err;
+    }
+    throw createError("Mongoose", "Internal Server Error", 500, err);
   }
 }
 
-// Generic Delete function
 export async function deleteEntity<T extends Document>(
   model: Model<T>,
   id: string
@@ -66,11 +71,13 @@ export async function deleteEntity<T extends Document>(
   try {
     const deleted = await model.findByIdAndDelete(id);
     if (!deleted) {
-      createError("Mongoose", "Entity not found", 404);
-    } else {
-      return deleted;
+      throw createError("Mongoose", "Entity not found", 404);
     }
+    return deleted;
   } catch (err) {
-    createError("Mongoose", "Internal Server Error", 500, err);
+    if (err instanceof Error && err.message === "Entity not found") {
+      throw err;
+    }
+    throw createError("Mongoose", "Internal Server Error", 500, err);
   }
 }

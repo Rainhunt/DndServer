@@ -6,7 +6,7 @@
     "dev": "npx tsc && cross-env NODE_ENV=development node dist/index",
     "start": "cross-env NODE_ENV=production node dist/index",
     "seed": "node dist/seeds/seedDB",
-    "test": "jest"
+    "test": "npx tsc && jest"
   },
   "keywords": [],
   "author": "",

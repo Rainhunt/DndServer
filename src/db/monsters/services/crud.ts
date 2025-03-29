@@ -15,7 +15,7 @@ export async function getMonsters(id?: string): Promise<IMonster | IMonster[]> {
 }
 
 
-export function editMonster(id: string, monsterData: IMonster): Promise<IMonster> {
+export function editMonster(id: string, monsterData: Partial<IMonster>): Promise<IMonster> {
   return updateEntity<IMonster>(Monster, id, monsterData);
 }
 
