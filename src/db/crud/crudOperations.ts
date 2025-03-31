@@ -1,10 +1,11 @@
+
 import { Model, Document, UpdateQuery } from "mongoose";
 import createError from "../../errors/createError";
 
-// Generic Create function
+
 export async function createEntity<T extends Document>(
   model: Model<T>,
-  newEntity: Partial<T>
+  newEntity: T
 ): Promise<T> {
   try {
     let entity: T = new model(newEntity);

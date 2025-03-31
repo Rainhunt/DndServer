@@ -6,7 +6,7 @@
     "build": "tsc",
     "dev": "npm run build && cross-env NODE_ENV=development node dist/index",
     "start": "npm run build && cross-env NODE_ENV=production node dist/index",
-    "seed": "npm run build && node dist/seeds/seedDB"
+    "seed": "npm run build && node dist/seeds/seedDB",
     "test": "npm run build && jest"
   },
   "keywords": [],

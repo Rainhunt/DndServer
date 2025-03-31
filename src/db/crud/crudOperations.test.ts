@@ -51,7 +51,7 @@ describe("CRUD Operations", () => {
 
   describe("createEntity", () => {
     it("should create a new entity and return it", async () => {
-      const newEntity = { data: "test data" };
+      const newEntity = { data: "test data" } as FakeDoc;
       const result = await createEntity<FakeDoc>(FakeModelAsModel, newEntity);
       expect(result).toHaveProperty("_id", "fakeId");
       expect(result.data).toBe("test data");
@@ -70,7 +70,7 @@ describe("CRUD Operations", () => {
       }
       const FailingModelAsModel = FailingModel as unknown as Model<FakeDoc>;
       await expect(
-        createEntity<FakeDoc>(FailingModelAsModel, { data: "bad" })
+        createEntity<FakeDoc>(FailingModelAsModel, { data: "bad" } as FakeDoc)
       ).rejects.toThrow("Save failed");
     });
   });
