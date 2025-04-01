@@ -9,6 +9,7 @@ export interface IUser extends Document {
     email: string,
     password: string,
     isAdmin: boolean,
+    profilePic?: string, // Optional profile picture field
     validatePassword: (password: string) => Promise<boolean>;
     lastAttempts: Array<number>
 }
@@ -22,6 +23,10 @@ const userSchema = new Schema<IUser>({
         required: true,
         default: false
     },
+    profilePic: { 
+        type: String, 
+        required: false  // This field is optional
+    },
     lastAttempts: {
         type: [Number],
         required: true,
@@ -34,6 +39,7 @@ userSchema.pre<IUser>("save", async function (next) {
         const salt = await genSalt(10);
         this.password = await hash(this.password, salt);
     }
+    next();
 });
 
 userSchema.methods.validatePassword = async function (password: string) {

@@ -1,15 +1,12 @@
 import { Request, Response, Router } from "express";
 import handleError, { catchError } from "../../errors/handleError";
 import { validateEditUserBody, validateLoginBody, validateRegistrationBody } from "./requestValidators";
-import { registerUser } from "../../db/users/services/registerUser";
+import { registerUser, getUsers, editUser, deleteUser} from "../../db/users/services/crud";
 import _ from "lodash";
 import { loginUser } from "../../db/users/services/loginUser";
 import auth from "../../services/auth";
 import createError from "../../errors/createError";
-import getUsers from "../../db/users/services/getUsers";
 import { IUser } from "../../db/users/schema/User";
-import editUser from "../../db/users/services/editUser";
-import deleteUser from "../../db/users/services/deleteUser";
 
 const router = Router();
 
