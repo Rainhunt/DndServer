@@ -5,7 +5,7 @@ import createError from "../../errors/createError";
 
 export async function createEntity<T extends Document>(
   model: Model<T>,
-  newEntity: T
+  newEntity: Omit<T,keyof Document>
 ): Promise<T> {
   try {
     let entity: T = new model(newEntity);
