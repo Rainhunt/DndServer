@@ -56,8 +56,9 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
             (0, handleError_1.default)(res, 400, schemaError);
         }
         else {
-            const user = yield (0, registerUser_1.registerUser)(req.body);
-            res.send(lodash_1.default.pick(user, ["name", "email", "_id"]));
+            yield (0, registerUser_1.registerUser)(req.body);
+            const token = yield (0, loginUser_1.loginUser)(req.body.email, req.body.password);
+            res.send(token);
         }
     }
     catch (err) {

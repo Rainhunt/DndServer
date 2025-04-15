@@ -5,7 +5,7 @@ import passwordField from "../../schemas/PasswordField";
 import { compare, genSalt, hash } from "bcrypt";
 
 export interface IUser extends Document {
-    name: NameField,
+    username: string,
     email: string,
     password: string,
     isAdmin: boolean,
@@ -14,7 +14,10 @@ export interface IUser extends Document {
 }
 
 const userSchema = new Schema<IUser>({
-    name: nameField,
+    username: {
+        type: String,
+        required: true
+    },
     email: emailField,
     password: passwordField,
     isAdmin: {
@@ -29,7 +32,7 @@ const userSchema = new Schema<IUser>({
     }
 });
 
-userSchema.pre<IUser>("save", async function (next) {
+userSchema.pre<IUser>("save", async function () {
     if (this.isModified("password")) {
         const salt = await genSalt(10);
         this.password = await hash(this.password, salt);

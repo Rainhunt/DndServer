@@ -13,12 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-const NameField_1 = __importDefault(require("../../schemas/NameField"));
 const EmailField_1 = __importDefault(require("../../schemas/EmailField"));
 const PasswordField_1 = __importDefault(require("../../schemas/PasswordField"));
 const bcrypt_1 = require("bcrypt");
 const userSchema = new mongoose_1.Schema({
-    name: NameField_1.default,
+    username: {
+        type: String,
+        required: true
+    },
     email: EmailField_1.default,
     password: PasswordField_1.default,
     isAdmin: {
@@ -32,7 +34,7 @@ const userSchema = new mongoose_1.Schema({
         default: []
     }
 });
-userSchema.pre("save", function (next) {
+userSchema.pre("save", function () {
     return __awaiter(this, void 0, void 0, function* () {
         if (this.isModified("password")) {
             const salt = yield (0, bcrypt_1.genSalt)(10);
