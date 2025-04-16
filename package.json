@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "npx tsc && cross-env NODE_ENV=development node dist/index",
-    "start": "cross-env NODE_ENV=production node dist/index",
-    "seed": "node dist/seeds/seedDB"
+    "build": "tsc",
+    "dev": "npm run build && cross-env NODE_ENV=development node dist/index",
+    "start": "npm run build && cross-env NODE_ENV=production node dist/index",
+    "seed": "npm run build && node dist/seeds/seedDB"
   },
   "keywords": [],
   "author": "",
