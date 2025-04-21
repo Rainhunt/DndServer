@@ -1,15 +1,12 @@
 import { Request, Response, Router } from "express";
 import handleError, { catchError } from "../../errors/handleError";
 import auth from "../../services/auth";
-import { addMonster } from "../../db/monsters/services/addMonster";
+import { addMonster, getMonsters, deleteMonster, editMonster} from "../../db/monsters/services/crud";
 import { validateEditMonsterBody, validateNewMonsterBody } from "./requestValidators";
 import { mapNewMonster } from "./requestSchemas/joi/mapNewMonster";
-import getMonsters from "../../db/monsters/services/getMonsters";
 import getMyMonsters from "../../db/monsters/services/getMyMonsters";
 import createError from "../../errors/createError";
-import deleteMonster from "../../db/monsters/services/deleteMonster";
 import { IMonster } from "../../db/monsters/schema/Monster";
-import editMonster from "../../db/monsters/services/editMonster";
 import { mapEditMonster } from "./requestSchemas/joi/mapEditMonster";
 import _ from "lodash";
 

@@ -1,3 +1,4 @@
+// loginUser.ts
 import createError from "../../../errors/createError";
 import { tokenGenerator } from "../../../services/auth";
 import User, { IUser } from "../schema/User";
@@ -15,17 +16,22 @@ export async function loginUser(email: string, password: string): Promise<string
             });
             recentLoginAttempts.push(now);
             if (recentLoginAttempts.length > 3) {
-                createError("Authentication", "Too many login attempts. Please try again later.", 429);
+                throw createError("Authentication", "Too many login attempts. Please try again later.", 429);
             }
             await User.updateOne({ email }, { $set: { lastAttempts: recentLoginAttempts } });
         }
         if (!user || !(await user.validatePassword(password))) {
-            createError("Authentication", "Invalid email or password", 401);
+            throw createError("Authentication", "Invalid email or password", 401);
         } else {
             await User.updateOne({ email }, { $set: { lastAttempts: [] } });
             return tokenGenerator(user);
         }
     } catch (err) {
-        createError("Authentication", "Failed to log in user", 500, err);
+        if (err instanceof Error &&
+            (err.message === "Invalid email or password" ||
+             err.message === "Too many login attempts. Please try again later.")) {
+            throw err;
+        }
+        throw createError("Authentication", "Failed to log in user", 500, err);
     }
 }
