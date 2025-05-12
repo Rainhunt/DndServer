@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { addMonster } from "../db/monsters/services/addMonster";
+import { addMonster } from "../db/monsters/services/crud";
 
 
 

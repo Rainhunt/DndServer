@@ -1,7 +1,7 @@
 import "dotenv/config";
 import chalk from "chalk";
 import { IUser } from "../db/users/schema/User";
-import { registerUser } from "../db/users/services/registerUser";
+import { registerUser } from "../db/users/services/crud";
 const adminMail = process.env.ADMIN_MAIL || "adminmail@mail.com";
 const adminPass = process.env.ADMIN_PASS || "aB1!padtoEight";
 

@@ -1,5 +1,5 @@
 .env
 node_modules/
 DndServer.code-workspace
-.idea/workspace.xml
 dist/
+.idea/

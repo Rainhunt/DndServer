@@ -20,4 +20,6 @@ export interface ICreature {
     damageTypes: DamageTypes;
     conditionImmunities: Modifier<CONDITIONS>[];
     abilities: string[];
+    image?: string;
+    map_image?: string;
 }
