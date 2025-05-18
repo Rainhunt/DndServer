@@ -92,7 +92,7 @@ router.get("/map/:id", auth, async (req: Request, res: Response): Promise<void> 
             return;
         }
 
-        res.status(200).json({ xml: map.xmlContent });
+        res.status(200).json({ xml: map.tmxFile });
     } catch (err) {
         catchError(res, err);
     }
@@ -100,6 +100,7 @@ router.get("/map/:id", auth, async (req: Request, res: Response): Promise<void> 
 
 router.post("/map/:id/visibility", auth, async (req: Request, res: Response): Promise<void> => {
     try {
+        //TODO ADD VALIDATION FOR BODY
         const user = req.user;
         const mapId = req.params.id;
         const { revealUserIds = [], hideUserIds = [] }: { revealUserIds: string[], hideUserIds: string[] } = req.body;
