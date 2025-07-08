@@ -30,7 +30,6 @@ const seedGamesAndMaps = async (adminUser: IUser): Promise<void> => {
         const sampleMapData: Partial<IMap> = {
             name: "Starter Town Map",
             tmxFile: tmxContent,
-            gameDMs: [adminUser._id as Types.ObjectId],
             revealedTo: [adminUser._id as Types.ObjectId], // Reveal to admin by default
             // Other fields like spriteSheets can be added if necessary
         };
@@ -39,23 +38,28 @@ const seedGamesAndMaps = async (adminUser: IUser): Promise<void> => {
 
         // 3. Create a sample game
         const sampleGameData: Partial<IGame> = {
-            title: "My First Adventure",
+            name: "My First Adventure",
+            owner: adminUser._id,
             gameDMs: [adminUser._id as Types.ObjectId],
             players: [], // Add player IDs if needed
             maps: [createdMap._id as Types.ObjectId],
             // previewImage can be added if available
         };
         const createdGame = await GameModel.create(sampleGameData);
-        console.log(chalk.green(`Created game: ${createdGame.title} (ID: ${createdGame._id})`));
+        console.log(chalk.green(`Created game: ${createdGame.name} (ID: ${createdGame._id})`));
 
-        // 4. Associate the game with the admin user
-        if (adminUser.games) {
-            adminUser.games.push(createdGame._id as Types.ObjectId);
+        // 4. Associate the game with the admin user, if not already associated
+        const gameId = createdGame._id as Types.ObjectId;
+
+        if (!adminUser.games.some(g => g.equals(gameId))) {
+            adminUser.games.push(gameId);
+            await adminUser.save({ validateBeforeSave: false });
+            console.log(chalk.green(`Associated game "${createdGame.name}" with admin user "${adminUser.email}".`));
         } else {
-            adminUser.games = [createdGame._id as Types.ObjectId];
+            console.log(chalk.yellow(`Game "${createdGame.name}" is already associated with admin user "${adminUser.email}".`));
         }
-        await adminUser.save();
-        console.log(chalk.green(`Associated game "${createdGame.title}" with admin user "${adminUser.email}".`));
+
+        console.log(chalk.green(`Associated game "${createdGame.name}" with admin user "${adminUser.email}".`));
 
         console.log(chalk.blueBright("Successfully seeded games and maps."));
 

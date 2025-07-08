@@ -1,9 +1,11 @@
 import chalk from "chalk";
 import { addMonster } from "../db/monsters/services/crud";
+import { IUser } from "../db/users/schema/User";
+import Monster from "../db/monsters/schema/Monster";
 
 
 
-export default async function seedMonsters(admin: string | undefined) {
+export default async function seedMonsters(admin: IUser | undefined) {
     const monsters: any = [
         {
             biome: "underworld",
@@ -356,10 +358,16 @@ export default async function seedMonsters(admin: string | undefined) {
     try {
         for (const monster of monsters) {
             try {
+                const exists = await Monster.findOne({ name: monster.name });
+                if (exists) {
+                    console.log(chalk.yellow(`Skipped existing monster: ${monster.name}`));
+                    continue;
+                }
+
                 await addMonster(monster);
+                console.log(chalk.green(`Added monster: ${monster.name}`));
             } catch (err) {
-                const error = err as Error
-                console.log(chalk.redBright(`Failed to add ${monster.name}: ${error.message}`));
+                console.log(chalk.redBright(`Failed to add ${monster.name}: ${(err as Error).message}`));
             }
         }
         console.log(chalk.greenBright("Seeded monsters in MongoDB"));
