@@ -1,10 +1,15 @@
 import { Router, Request, Response } from "express";
-import { GameModel } from "../../db/games/schema/games";
 import auth from "../../services/auth";
 import { catchError } from "../../errors/handleError";
-import User from "../../db/users/schema/User";
-import {MapModel} from "../../db/maps/schema/maps";
 import { Types } from "mongoose";
+
+import getMyGames from "../../db/games/services/getMyGames";
+import { getGames } from "../../db/games/services/crud";
+import { getUsers } from "../../db/users/services/crud";
+import { getMaps } from "../../db/maps/services/crud";
+import User, { IUser } from "../../db/users/schema/User";
+import { GameModel } from "../../db/games/schema/games";
+import createError from "../../errors/createError";
 
 const router = Router();
 
@@ -17,13 +22,8 @@ router.get("/my-games", auth, async (req: Request, res: Response): Promise<void>
             return;
         }
 
-        const userDoc = await User.findById(user._id).populate("games", "_id").lean();
-        if (!userDoc) {
-            res.status(404).json({ message: "User not found" });
-            return;
-        }
-
-        const gameIds = userDoc.games?.map((game: any) => game._id) || [];
+        const games = await getMyGames(user._id);
+        const gameIds = games.map((g) => g._id);
         res.status(200).json({ gameIds });
     } catch (err) {
         catchError(res, err);
@@ -41,8 +41,10 @@ router.get("/games/:id", auth, async (req: Request, res: Response): Promise<void
             return;
         }
 
-        const userDoc = await User.findById(user._id).lean();
-        if (!userDoc || !userDoc.games?.some(g => g.toString() === gameId)) {
+        const userDoc = await getUsers(user._id) as IUser;
+        const ownsGame = userDoc.games.some((g: Types.ObjectId) => g.toString() === gameId);
+
+        if (!ownsGame) {
             res.status(403).json({ message: "You do not have access to this game." });
             return;
         }
@@ -53,13 +55,13 @@ router.get("/games/:id", auth, async (req: Request, res: Response): Promise<void
             return;
         }
 
-        const maps = game.maps || [];
-        res.status(200).json({ maps });
+        res.status(200).json({ maps: game.maps || [] });
     } catch (err) {
         catchError(res, err);
     }
 });
 
+// GET /map/:id
 router.get("/map/:id", auth, async (req: Request, res: Response): Promise<void> => {
     try {
         const user = req.user;
@@ -70,8 +72,8 @@ router.get("/map/:id", auth, async (req: Request, res: Response): Promise<void> 
             return;
         }
 
-        const map = await MapModel.findById(mapId).lean();
-        if (!map) {
+        const map = await getMaps(mapId);
+        if (!map || Array.isArray(map)) {
             res.status(404).json({ message: "Map not found" });
             return;
         }
@@ -83,7 +85,6 @@ router.get("/map/:id", auth, async (req: Request, res: Response): Promise<void> 
         }
 
         const userIdStr = user._id.toString();
-
         const isGameDM = game.gameDMs.some((id: Types.ObjectId) => id.toString() === userIdStr);
         const isRevealed = map.revealedTo?.some((id: Types.ObjectId) => id.toString() === userIdStr);
 
@@ -98,9 +99,9 @@ router.get("/map/:id", auth, async (req: Request, res: Response): Promise<void> 
     }
 });
 
+// POST /map/:id/visibility
 router.post("/map/:id/visibility", auth, async (req: Request, res: Response): Promise<void> => {
     try {
-        //TODO ADD VALIDATION FOR BODY
         const user = req.user;
         const mapId = req.params.id;
         const { revealUserIds = [], hideUserIds = [] }: { revealUserIds: string[], hideUserIds: string[] } = req.body;
@@ -110,8 +111,8 @@ router.post("/map/:id/visibility", auth, async (req: Request, res: Response): Pr
             return;
         }
 
-        const map = await MapModel.findById(mapId);
-        if (!map) {
+        const map = await getMaps(mapId);
+        if (!map || Array.isArray(map)) {
             res.status(404).json({ message: "Map not found" });
             return;
         }
@@ -130,16 +131,9 @@ router.post("/map/:id/visibility", auth, async (req: Request, res: Response): Pr
             return;
         }
 
-        // Convert current list to Set for easy add/remove
         const revealedToSet = new Set(map.revealedTo?.map((id: Types.ObjectId) => id.toString()) || []);
-
-        for (const uid of revealUserIds) {
-            revealedToSet.add(uid);
-        }
-
-        for (const uid of hideUserIds) {
-            revealedToSet.delete(uid);
-        }
+        for (const uid of revealUserIds) revealedToSet.add(uid);
+        for (const uid of hideUserIds) revealedToSet.delete(uid);
 
         map.revealedTo = Array.from(revealedToSet).map(id => new Types.ObjectId(id));
         await map.save();
@@ -150,6 +144,7 @@ router.post("/map/:id/visibility", auth, async (req: Request, res: Response): Pr
     }
 });
 
+// GET /map/:id/visibility
 router.get("/map/:id/visibility", auth, async (req: Request, res: Response): Promise<void> => {
     try {
         const user = req.user;
@@ -160,8 +155,8 @@ router.get("/map/:id/visibility", auth, async (req: Request, res: Response): Pro
             return;
         }
 
-        const map = await MapModel.findById(mapId).lean();
-        if (!map) {
+        const map = await getMaps(mapId);
+        if (!map || Array.isArray(map)) {
             res.status(404).json({ message: "Map not found" });
             return;
         }
@@ -188,6 +183,5 @@ router.get("/map/:id/visibility", auth, async (req: Request, res: Response): Pro
         catchError(res, err);
     }
 });
-
 
 export { router as gameRouter };

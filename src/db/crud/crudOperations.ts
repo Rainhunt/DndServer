@@ -3,22 +3,22 @@ import { Model, Document, UpdateQuery } from "mongoose";
 import createError from "../../errors/createError";
 
 
-export async function createEntity<T extends Document>(
-  model: Model<T>,
-  newEntity: Omit<T,keyof Document>
+export async function createEntity<T extends Document, Input = Partial<T>>(
+    model: Model<T>,
+    newEntity: Input
 ): Promise<T> {
   try {
-    let entity: T = new model(newEntity);
-    entity = await entity.save();
-    return entity;
+    const entity = new model(newEntity);
+    return await entity.save();
   } catch (err) {
     if (err instanceof Error) {
-      createError("Mongoose", err.message, 409);
+      throw createError("Mongoose", err.message, 409);
     } else {
-      createError("Mongoose", "unknown error", 500);
+      throw createError("Mongoose", "Unknown error", 500);
     }
   }
 }
+
 
 export async function getEntity<T extends Document>(
   model: Model<T>,

@@ -1,10 +1,12 @@
 import fs from "fs/promises";
 import path from "path";
 import chalk from "chalk";
-import { GameModel, IGame } from "../db/games/schema/games";
-import { MapModel, IMap } from "../db/maps/schema/maps";
-import User, { IUser } from "../db/users/schema/User";
+import { GameModel } from "../db/games/schema/games";
+import { MapModel } from "../db/maps/schema/maps";
 import { Types } from "mongoose";
+import { CreateGameInput, createGame } from "../db/games/services/crud";
+import { CreateMapInput, createMap } from "../db/maps/services/crud";
+import { IUser } from "../db/users/schema/User";
 
 const seedGamesAndMaps = async (adminUser: IUser): Promise<void> => {
     try {
@@ -21,34 +23,36 @@ const seedGamesAndMaps = async (adminUser: IUser): Promise<void> => {
             return;
         }
 
-        // Clear existing games and maps to avoid duplicates during reseeding
+        // 2. Clear existing games and maps to avoid duplicates during reseeding
         await GameModel.deleteMany({});
         await MapModel.deleteMany({});
         console.log(chalk.gray("Cleared existing games and maps."));
 
-        // 2. Create a sample map
-        const sampleMapData: Partial<IMap> = {
+        // 3. Create a sample map
+        const sampleMapData: CreateMapInput = {
             name: "Starter Town Map",
             tmxFile: tmxContent,
-            revealedTo: [adminUser._id as Types.ObjectId], // Reveal to admin by default
-            // Other fields like spriteSheets can be added if necessary
+            revealedTo: [adminUser._id],
         };
-        const createdMap = await MapModel.create(sampleMapData);
+
+        const createdMap = await createMap(sampleMapData);
         console.log(chalk.green(`Created map: ${createdMap.name} (ID: ${createdMap._id})`));
 
-        // 3. Create a sample game
-        const sampleGameData: Partial<IGame> = {
+        // 4. Create a sample game
+        const sampleGameData: CreateGameInput = {
             name: "My First Adventure",
             owner: adminUser._id,
-            gameDMs: [adminUser._id as Types.ObjectId],
-            players: [], // Add player IDs if needed
-            maps: [createdMap._id as Types.ObjectId],
-            // previewImage can be added if available
+            gameDMs: [adminUser._id],
+            players: [],
+            maps: [createdMap._id],
+            gameAdmins: [adminUser._id],
+            config: {},
         };
-        const createdGame = await GameModel.create(sampleGameData);
+
+        const createdGame = await createGame(sampleGameData);
         console.log(chalk.green(`Created game: ${createdGame.name} (ID: ${createdGame._id})`));
 
-        // 4. Associate the game with the admin user, if not already associated
+        // 5. Associate the game with the admin user, if not already associated
         const gameId = createdGame._id as Types.ObjectId;
 
         if (!adminUser.games.some(g => g.equals(gameId))) {
@@ -58,8 +62,6 @@ const seedGamesAndMaps = async (adminUser: IUser): Promise<void> => {
         } else {
             console.log(chalk.yellow(`Game "${createdGame.name}" is already associated with admin user "${adminUser.email}".`));
         }
-
-        console.log(chalk.green(`Associated game "${createdGame.name}" with admin user "${adminUser.email}".`));
 
         console.log(chalk.blueBright("Successfully seeded games and maps."));
 

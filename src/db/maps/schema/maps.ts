@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 export interface IMap extends Document {
+    _id: Types.ObjectId;
     name: string;
     tmxFile: string;
     tilesets?: string; //TODO array that must contain at least one tileset object - which MIGHT include a source, but MUST contain one image
