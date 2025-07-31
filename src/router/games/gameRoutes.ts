@@ -342,15 +342,30 @@ router.put(
                 res.status(401).json({ message: "Unauthorized" });
                 return;
             }
-            const data = req.body as Partial<{ tilesets?: string; revealedTo?: string[] }>;
-            if (data.revealedTo) data.revealedTo = data.revealedTo.map(id => new Types.ObjectId(id));
-            const updated = await editMap(mapId, data as any);
+
+            // Pull only the fields we care about from the raw body
+            const { tilesets, revealedTo } = req.body as {
+                tilesets?: string;
+                revealedTo?: string[];
+            };
+
+            // Build a correctly‐typed update payload
+            const updatePayload: Partial<CreateMapInput> = {};
+            if (tilesets !== undefined) {
+                updatePayload.tilesets = tilesets;
+            }
+            if (revealedTo !== undefined) {
+                updatePayload.revealedTo = revealedTo.map(id => new Types.ObjectId(id));
+            }
+
+            const updated = await editMap(mapId, updatePayload);
             res.status(200).json({ map: updated });
         } catch (err) {
             catchError(res, err);
         }
     }
 );
+
 
 // DELETE /maps/:id - delete a map
 router.delete(
